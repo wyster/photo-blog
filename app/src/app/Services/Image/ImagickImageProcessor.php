@@ -163,8 +163,6 @@ class ImagickImageProcessor implements ImageProcessor
      */
     private function getThumbnailName(string $prefix = 'thumbnail'): string
     {
-        $fileName = pathinfo($this->storage->path($this->path), PATHINFO_FILENAME);
-        $fileExtension = pathinfo($this->storage->path($this->path), PATHINFO_EXTENSION);
-        return $fileName . '_' . $prefix . '.' . $fileExtension;
+        return pathinfo($this->storage->path($this->path), PATHINFO_FILENAME) . '_' . $prefix . '.' . pathinfo($this->storage->path($this->path), PATHINFO_EXTENSION);
     }
 }

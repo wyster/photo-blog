@@ -121,21 +121,50 @@ class ImagickImageProcessor implements ImageProcessor
     {
         return collect($this->config['thumbnails'])
             ->map(function ($config) {
-                $directoryPath = pathinfo($this->storage->path($this->path), PATHINFO_DIRNAME);
-                $thumbnailFileName = sprintf('%s_%s.%s', pathinfo($this->storage->path($this->path), PATHINFO_FILENAME),
-                    $config['prefix'], pathinfo($this->storage->path($this->path), PATHINFO_EXTENSION));
-                $thumbnailPath = sprintf('%s/%s', $directoryPath, $thumbnailFileName);
-
                 $this->image
                     ->thumbnail(new Box($config['width'], $config['height']), $config['mode'])
-                    ->save($thumbnailPath, ['quality' => $config['quality']]);
-
+                    ->save($this->getThumbnailStoragePath($config['prefix']), ['quality' => $config['quality']]);
                 return [
-                    'path' => sprintf('%s/%s', pathinfo($this->path, PATHINFO_DIRNAME), $thumbnailFileName),
+                    'path' => $this->getThumbnailAbsolutePath($config['prefix']),
                     'width' => $config['width'],
                     'height' => $config['height'],
                 ];
             })
             ->toArray();
+    }
+
+    /**
+     * Get storage path to the thumbnail file.
+     *
+     * @param string|null $prefix
+     * @return string
+     */
+    private function getThumbnailStoragePath(?string $prefix): string
+    {
+        return pathinfo($this->storage->path($this->path), PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . $this->getThumbnailName($prefix);
+    }
+
+    /**
+     * Get fully specified path to the thumbnail file.
+     *
+     * @param string|null $prefix
+     * @return string
+     */
+    private function getThumbnailAbsolutePath(?string $prefix): string
+    {
+        return pathinfo($this->path, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . $this->getThumbnailName($prefix);
+    }
+
+    /**
+     * Get thumbnail file name.
+     *
+     * @param string $prefix
+     * @return string
+     */
+    private function getThumbnailName(string $prefix = 'thumbnail'): string
+    {
+        $fileName = pathinfo($this->storage->path($this->path), PATHINFO_FILENAME);
+        $fileExtension = pathinfo($this->storage->path($this->path), PATHINFO_EXTENSION);
+        return $fileName . '_' . $prefix . '.' . $fileExtension;
     }
 }

@@ -61,8 +61,6 @@ class Photo extends Model
         'created_by_user_id',
         'location_id',
         'path',
-        'avg_color',
-        'metadata',
     ];
 
     /**

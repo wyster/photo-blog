@@ -76,22 +76,23 @@ class PhotoManager
         $attributes = $this->validator->validateForCreate($attributes);
 
         $attributes['path'] = $this->storage->put(sprintf('photos/%s', str_unique(20)), $attributes['file']);
-        $this->imageProcessor->open($attributes['path']);
-        $attributes['avg_color'] = $this->imageProcessor->getAvgColor();
-        $attributes['metadata'] = $this->imageProcessor->getMetadata();
-        $attributes['thumbnails'] = $this->imageProcessor->createThumbnails();
-        $this->imageProcessor->close();
 
         $photo = (new Photo)->fill($attributes);
 
-        $this->database->transaction(function () use ($photo, $attributes) {
+        $this->imageProcessor->open($attributes['path']);
+        $photo->avg_color = $this->imageProcessor->getAvgColor();
+        $photo->metadata = $this->imageProcessor->getMetadata();
+        $thumbnails = $this->imageProcessor->createThumbnails();
+        $this->imageProcessor->close();
+
+        $this->database->transaction(function () use ($photo, $attributes, $thumbnails) {
             if (isset($attributes['location'])) {
                 $location = $this->locationManager->create($attributes['location']);
                 $attributes['location_id'] = $location->id;
             }
             $photo->save();
             $photo->thumbnails()->detach();
-            collect($attributes['thumbnails'])->each(function (array $attributes) use ($photo) {
+            collect($thumbnails)->each(function (array $attributes) use ($photo) {
                 $photo->thumbnails()->create($attributes);
             });
         });

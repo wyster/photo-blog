@@ -14,12 +14,13 @@ RUN apt-get update -y \
     && docker-php-ext-install zip \
     && docker-php-ext-install opcache \
     && docker-php-ext-install exif \
+    && apt-get install -y libjpeg-dev libpng-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include --with-png-dir=/usr/include --with-freetype-dir=/usr/include \
+    && docker-php-ext-install gd \
     && apt-get install -y libmagickwand-dev --no-install-recommends \
     && pecl install imagick \
     && pecl install redis \
-    && docker-php-ext-enable --ini-name pecl.ini \
-        imagick \
-        redis \
+    && docker-php-ext-enable --ini-name pecl.ini imagick redis \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/*
 

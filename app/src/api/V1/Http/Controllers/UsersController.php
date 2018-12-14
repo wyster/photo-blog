@@ -3,8 +3,7 @@
 namespace Api\V1\Http\Controllers;
 
 use Api\V1\Http\Resources\UserPlainResource;
-use App\Managers\User\Contracts\UserManager;
-use App\Models\User;
+use App\Managers\User\UserManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

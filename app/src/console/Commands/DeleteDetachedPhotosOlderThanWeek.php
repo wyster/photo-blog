@@ -2,7 +2,7 @@
 
 namespace Console\Commands;
 
-use App\Managers\Photo\Contracts\PhotoManager;
+use App\Managers\Photo\PhotoManager;
 use App\Models\Photo;
 use Carbon\Carbon;
 use Illuminate\Console\Command;

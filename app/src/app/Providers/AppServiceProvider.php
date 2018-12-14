@@ -40,11 +40,6 @@ class AppServiceProvider extends ServiceProvider
             \GuzzleHttp\Client::class
         );
 
-        $this->app->bind(
-            \Tooleks\Php\AvgColorPicker\Contracts\AvgColorPicker::class,
-            \Tooleks\Php\AvgColorPicker\Gd\AvgColorPicker::class
-        );
-
         $this->app->singleton('HTMLPurifier', function (Application $app) {
             $filesystem = $app->make('filesystem')->disk('local');
             $cacheDirectory = 'cache/HTMLPurifier_DefinitionCache';
@@ -65,11 +60,6 @@ class AppServiceProvider extends ServiceProvider
     protected function registerLibServices(): void
     {
         $this->app->bind(
-            \Lib\ExifFetcher\Contracts\ExifFetcher::class,
-            \Lib\ExifFetcher\ExifFetcher::class
-        );
-
-        $this->app->bind(
             \Lib\Rss\Contracts\Builder::class,
             \Lib\Rss\Builder::class
         );
@@ -78,17 +68,6 @@ class AppServiceProvider extends ServiceProvider
             \Lib\SiteMap\Contracts\Builder::class,
             \Lib\SiteMap\Builder::class
         );
-
-        $this->app->bind(
-            \Lib\ThumbnailsGenerator\Contracts\ThumbnailsGenerator::class,
-            function (Application $app) {
-                return new \Lib\ThumbnailsGenerator\ThumbnailsGenerator(
-                    $app->make(\Illuminate\Contracts\Validation\Factory::class),
-                    $app->make('config')->get('main.photo.thumbnails')
-                );
-            }
-        );
-
     }
 
     /**
@@ -99,57 +78,31 @@ class AppServiceProvider extends ServiceProvider
     protected function registerAppServices(): void
     {
         $this->app->bind(
-            \App\Managers\Photo\Contracts\PhotoManager::class,
-            \App\Managers\Photo\PhotoManager::class
+            \App\Services\Image\Contracts\ImageProcessor::class,
+            \App\Services\Image\ImagickImageProcessor::class
+        );
+
+        $this->app->when(\App\Services\Image\ImagickImageProcessor::class)
+            ->needs('$config')
+            ->give(function (Application $app) {
+                return [
+                    'thumbnails' => $app->make('config')->get('main.photo.thumbnails'),
+                ];
+            });
+
+        $this->app->bind(
+            \App\Services\Manifest\Contracts\Manifest::class,
+            \App\Services\Manifest\AppManifest::class
         );
 
         $this->app->bind(
-            \App\Managers\Post\Contracts\PostManager::class,
-            \App\Managers\Post\PostManager::class
+            \App\Services\SiteMap\Contracts\SiteMapBuilder::class,
+            \App\Services\SiteMap\AppSiteMapBuilder::class
         );
 
         $this->app->bind(
-            \App\Managers\Subscription\Contracts\SubscriptionManager::class,
-            \App\Managers\Subscription\SubscriptionManager::class
-        );
-
-        $this->app->bind(
-            \App\Managers\Tag\Contracts\TagManager::class,
-            \App\Managers\Tag\TagManager::class
-        );
-
-        $this->app->bind(
-            \App\Managers\User\Contracts\UserManager::class,
-            \App\Managers\User\UserManager::class
-        );
-
-        $this->app->when(\App\Managers\User\UserManager::class)
-            ->needs(\Illuminate\Contracts\Hashing\Hasher::class)
-            ->give('hash');
-
-        $this->app->bind(
-            \App\Services\Photo\Contracts\ExifFetcherService::class,
-            \App\Services\Photo\ExifFetcherService::class
-        );
-
-        $this->app->bind(
-            \App\Services\Photo\Contracts\ThumbnailsGeneratorService::class,
-            \App\Services\Photo\ThumbnailsGeneratorService::class
-        );
-
-        $this->app->bind(
-            \App\Services\Manifest\Contracts\ManifestService::class,
-            \App\Services\Manifest\ManifestService::class
-        );
-
-        $this->app->bind(
-            \App\Services\SiteMap\Contracts\SiteMapBuilderService::class,
-            \App\Services\SiteMap\SiteMapBuilderService::class
-        );
-
-        $this->app->bind(
-            \App\Services\Rss\Contracts\RssBuilderService::class,
-            \App\Services\Rss\RssBuilderService::class
+            \App\Services\Rss\Contracts\RssBuilder::class,
+            \App\Services\Rss\AppRssBuilder::class
         );
 
         $this->app->bind(

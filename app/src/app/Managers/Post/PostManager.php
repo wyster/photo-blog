@@ -2,7 +2,6 @@
 
 namespace App\Managers\Post;
 
-use App\Managers\Post\Contracts\PostManager as PostManagerContract;
 use App\Models\Builders\PostBuilder;
 use App\Models\Photo;
 use App\Models\Post;
@@ -15,7 +14,7 @@ use Illuminate\Database\ConnectionInterface as Database;
  *
  * @package App\Managers\Post
  */
-class PostManager implements PostManagerContract
+class PostManager
 {
     /**
      * @var Database
@@ -44,6 +43,37 @@ class PostManager implements PostManagerContract
         $this->database = $database;
         $this->auth = $auth;
         $this->validator = $validator;
+    }
+
+    /**
+     * Create a post.
+     *
+     * @param array $attributes
+     * @return Post
+     */
+    public function create(array $attributes): Post
+    {
+        $defaultAttributes = ['created_by_user_id' => $this->auth->id()];
+
+        $attributes = array_merge($attributes, $defaultAttributes);
+
+        $attributes = $this->validator->validateForCreate($attributes);
+
+        $post = (new Post)->fill($attributes);
+
+        $this->database->transaction(function () use ($post, $attributes) {
+            $post->save();
+            if (isset($attributes['tags'])) {
+                $this->syncTags($post, $attributes['tags']);
+            }
+            if (isset($attributes['photo'])) {
+                $this->syncPhotos($post, [$attributes['photo']]);
+            }
+        });
+
+        $post->load('tags', 'photos');
+
+        return $post;
     }
 
     /**
@@ -85,35 +115,10 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
-     */
-    public function create(array $attributes): Post
-    {
-        $defaultAttributes = ['created_by_user_id' => $this->auth->id()];
-
-        $attributes = array_merge($attributes, $defaultAttributes);
-
-        $attributes = $this->validator->validateForCreate($attributes);
-
-        $post = (new Post)->fill($attributes);
-
-        $this->database->transaction(function () use ($post, $attributes) {
-            $post->save();
-            if (isset($attributes['tags'])) {
-                $this->syncTags($post, $attributes['tags']);
-            }
-            if (isset($attributes['photo'])) {
-                $this->syncPhotos($post, [$attributes['photo']]);
-            }
-        });
-
-        $post->load('tags', 'photos');
-
-        return $post;
-    }
-
-    /**
-     * @inheritdoc
+     * Update a post.
+     *
+     * @param Post $post
+     * @param array $attributes
      */
     public function update(Post $post, array $attributes = []): void
     {
@@ -135,7 +140,11 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a post by ID.
+     *
+     * @param int $id
+     * @param array $filters
+     * @return Post
      */
     public function getById(int $id, array $filters = []): Post
     {
@@ -160,7 +169,11 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a post before ID.
+     *
+     * @param int $id
+     * @param array $filters
+     * @return Post
      */
     public function getBeforeId(int $id, array $filters = []): Post
     {
@@ -187,7 +200,11 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a post after ID.
+     *
+     * @param int $id
+     * @param array $filters
+     * @return Post
      */
     public function getAfterId(int $id, array $filters = []): Post
     {
@@ -214,7 +231,12 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Paginate over posts.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
      */
     public function paginate(int $page, int $perPage, array $filters = [])
     {
@@ -241,7 +263,10 @@ class PostManager implements PostManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Delete a post.
+     *
+     * @param Post $post
+     * @return void
      */
     public function delete(Post $post): void
     {

@@ -2,6 +2,8 @@
 
 namespace App\Util;
 
+use Exception;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
 
 /**
@@ -10,8 +12,10 @@ use InvalidArgumentException;
  * @param int $length
  * @param string $alphabet
  * @return string
+ * @throws InvalidArgumentException
+ * @throws Exception
  */
-function str_unique(int $length = 40, $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): string
+function str_unique(int $length = 40, string $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'): string
 {
     if ($length < 1) {
         throw new InvalidArgumentException('Length parameter value should be greater than or equals to 1.');
@@ -19,7 +23,7 @@ function str_unique(int $length = 40, $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabc
 
     $str = '';
 
-    $alphabetLength = strlen($alphabet);
+    $alphabetLength = Str::length($alphabet);
 
     for ($i = 0; $i < $length; $i++) {
         $str .= $alphabet[random_int(0, $alphabetLength - 1)];
@@ -39,7 +43,7 @@ function html_purify($html)
     $value = value($html);
 
     if (is_null($value)) {
-        return $value;
+        return null;
     }
 
     return app()->make('HTMLPurifier')->purify($value);
@@ -103,27 +107,6 @@ function validator_filter_attributes(array $attributes, array $rules): array
 }
 
 /**
- * Normalize math fraction value.
- *
- * @example fraction_normalize("2/4"); // 1/2
- *
- * @param string $value
- * @return null|string
- */
-function fraction_normalize(string $value): ?string
-{
-    $result = null;
-
-    $values = explode('/', $value);
-    if (count($values) === 2) {
-        [$numerator, $denominator] = $values;
-        $result = '1/' . (int) ($denominator / $numerator);
-    }
-
-    return $result;
-}
-
-/**
  * Get file storage url.
  *
  * @param string $path
@@ -152,7 +135,7 @@ function url_frontend(string $path = ''): string
  */
 function url_frontend_sign_in(): string
 {
-    return url_frontend("/sign-in");
+    return url_frontend('/sign-in');
 }
 
 /**
@@ -163,7 +146,7 @@ function url_frontend_sign_in(): string
  */
 function url_frontend_photo(int $id): string
 {
-    return url_frontend("/photo/{$id}");
+    return url_frontend(sprintf('/photo/%s', urlencode($id)));
 }
 
 /**
@@ -174,7 +157,7 @@ function url_frontend_photo(int $id): string
  */
 function url_frontend_tag(string $tag): string
 {
-    return url_frontend("/photos/tag/{$tag}");
+    return url_frontend(sprintf('/photos/tag/%s', urlencode($tag)));
 }
 
 /**
@@ -185,5 +168,5 @@ function url_frontend_tag(string $tag): string
  */
 function url_frontend_unsubscription(string $token): string
 {
-    return url_frontend("/unsubscription/{$token}");
+    return url_frontend(sprintf('/unsubscription/%s', urlencode($token)));
 }

@@ -2,15 +2,15 @@
 
 namespace App\Services\Manifest;
 
-use App\Services\Manifest\Contracts\ManifestService as ManifestServiceContract;
+use App\Services\Manifest\Contracts\Manifest;
 use Illuminate\Config\Repository as Config;
 
 /**
- * Class ManifestService.
+ * Class AppManifest.
  *
  * @package App\Services\Rss
  */
-class ManifestService implements ManifestServiceContract
+class AppManifest implements Manifest
 {
     /**
      * @var Config
@@ -18,7 +18,7 @@ class ManifestService implements ManifestServiceContract
     private $config;
 
     /**
-     * ManifestService constructor.
+     * AppManifest constructor.
      *
      * @param Config $config
      */

@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
  * Class RouteServiceProvider.
@@ -32,6 +32,22 @@ class RouteServiceProvider extends ServiceProvider
         $this->registerParametersBindings();
 
         parent::boot();
+    }
+
+    /**
+     * Register model bindings.
+     *
+     * @return void
+     */
+    public function registerParametersBindings()
+    {
+        Route::bind('id', function ($id) {
+            // Resolve 'me' value as identifier of an authorized user.
+            if ($id === 'me') {
+                $id = optional(Auth::user())->id;
+            }
+            return $id;
+        });
     }
 
     /**
@@ -66,18 +82,6 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "public" routes for the application.
-     *
-     * @return void
-     */
-    protected function mapPublicRoutes()
-    {
-        Route::middleware('public')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/public.php'));
-    }
-
-    /**
      * Define the "web" routes for the application.
      *
      * These routes all receive session state, CSRF protection, etc.
@@ -92,18 +96,14 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register model bindings.
+     * Define the "public" routes for the application.
      *
      * @return void
      */
-    public function registerParametersBindings()
+    protected function mapPublicRoutes()
     {
-        Route::bind('id', function ($id) {
-            // Resolve 'me' value as identifier of an authorized user.
-            if ($id === 'me') {
-                $id = optional(Auth::user())->id;
-            }
-            return $id;
-        });
+        Route::middleware('public')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/public.php'));
     }
 }

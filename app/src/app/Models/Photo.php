@@ -16,11 +16,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int location_id
  * @property string path
  * @property string avg_color
+ * @property array metadata
  * @property Carbon created_at
  * @property Carbon updated_at
  * @property User createdByUser
  * @property User location
- * @property Exif exif
  * @property Collection thumbnails
  * @property Post post
  * @property Collection posts
@@ -34,6 +34,14 @@ class Photo extends Model
     protected $attributes = [
         'path' => '',
         'avg_color' => '',
+        'metadata' => '',
+    ];
+
+    /**
+     * @inheritdoc
+     */
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     /**
@@ -44,6 +52,7 @@ class Photo extends Model
         'location_id',
         'path',
         'avg_color',
+        'metadata',
     ];
 
     /**
@@ -54,9 +63,16 @@ class Photo extends Model
         parent::boot();
 
         static::deleting(function (self $photo) {
-            $photo->exif()->delete();
             $photo->thumbnails()->detach();
         });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function thumbnails()
+    {
+        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)->orderBy('width')->orderBy('height');
     }
 
     /**
@@ -92,22 +108,6 @@ class Photo extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function exif()
-    {
-        return $this->hasOne(Exif::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function thumbnails()
-    {
-        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)->orderBy('width')->orderBy('height');
-    }
-
-    /**
      * @return Post|null
      */
     public function getPostAttribute(): ?Post
@@ -125,5 +125,87 @@ class Photo extends Model
     public function posts()
     {
         return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_PHOTOS);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getManufacturerAttribute(): ?string
+    {
+        return $this->metadata['ifd0.Make'] ?? $this->metadata['exif.MakerNote'] ?? null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getModelAttribute(): ?string
+    {
+        return $this->metadata['ifd0.Model'] ?? null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExposureTimeAttribute(): ?string
+    {
+        $raw = (string) $this->metadata['exif.ExposureTime'];
+
+        [$numerator, $denominator] = explode('/', $raw);
+
+        if (!is_numeric($numerator) || !is_numeric($denominator)) {
+            return null;
+        }
+
+        $value = $denominator / $numerator;
+
+        return '1/' . number_format($value, 0);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getApertureAttribute(): ?string
+    {
+        $raw = (string) $this->metadata['exif.FNumber'];
+
+        [$numerator, $denominator] = explode('/', $raw);
+
+        if (!is_numeric($numerator) || !is_numeric($denominator)) {
+            return null;
+        }
+
+        $value = $numerator / $denominator;
+
+        return 'f/' . number_format($value, 1);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIsoAttribute(): ?string
+    {
+        return $this->metadata['exif.ISOSpeedRatings'] ?? null;
+    }
+
+    /**
+     * @return Carbon|null
+     */
+    public function getTakenAtAttribute(): ?string
+    {
+        $takenAt = $this->metadata['exif.DateTimeOriginal'];
+
+        if (!$takenAt) {
+            return null;
+        }
+
+        return new Carbon($takenAt);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSoftwareAttribute(): ?string
+    {
+        return $this->metadata['ifd0.Software'] ?? null;
     }
 }

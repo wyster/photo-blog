@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\SiteMap\Contracts\SiteMapBuilderService;
+use App\Services\SiteMap\Contracts\SiteMapBuilder;
 use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Http\Response;
@@ -22,7 +22,7 @@ class SiteMapController extends Controller
     private $responseFactory;
 
     /**
-     * @var SiteMapBuilderService
+     * @var SiteMapBuilder
      */
     private $siteMapBuilder;
 
@@ -40,11 +40,11 @@ class SiteMapController extends Controller
      * SiteMapController constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param SiteMapBuilderService $siteMapBuilder
+     * @param SiteMapBuilder $siteMapBuilder
      * @param CacheManager $cacheManager
      * @param Config $config
      */
-    public function __construct(ResponseFactory $responseFactory, SiteMapBuilderService $siteMapBuilder, CacheManager $cacheManager, Config $config)
+    public function __construct(ResponseFactory $responseFactory, SiteMapBuilder $siteMapBuilder, CacheManager $cacheManager, Config $config)
     {
         $this->responseFactory = $responseFactory;
         $this->siteMapBuilder = $siteMapBuilder;

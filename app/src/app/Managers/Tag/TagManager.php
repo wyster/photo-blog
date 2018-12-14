@@ -3,7 +3,6 @@
 namespace App\Managers\Tag;
 
 use App\Models\Tag;
-use App\Managers\Tag\Contracts\TagManager as TagManagerContract;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**
@@ -11,7 +10,7 @@ use Illuminate\Database\ConnectionInterface as Database;
  *
  * @package App\Managers\Tag
  */
-class TagManager implements TagManagerContract
+class TagManager
 {
     /**
      * @var Database
@@ -29,7 +28,12 @@ class TagManager implements TagManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Paginate over tags.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
      */
     public function paginate(int $page, int $perPage, array $filters = [])
     {

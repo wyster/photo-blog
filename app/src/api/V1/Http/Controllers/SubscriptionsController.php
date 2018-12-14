@@ -6,7 +6,7 @@ use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Requests\ReCaptchaRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\SubscriptionPlainResource;
-use App\Managers\Subscription\Contracts\SubscriptionManager;
+use App\Managers\Subscription\SubscriptionManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;

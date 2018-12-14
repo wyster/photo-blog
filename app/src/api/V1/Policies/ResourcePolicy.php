@@ -40,30 +40,6 @@ class ResourcePolicy
     }
 
     /**
-     * Update a resource.
-     *
-     * @param User $authUser
-     * @param mixed $resource
-     * @return bool
-     */
-    public function update(User $authUser, $resource)
-    {
-        return $this->hasAccessToResource($authUser, $resource);
-    }
-
-    /**
-     * Delete a resource.
-     *
-     * @param User $authUser
-     * @param mixed $resource
-     * @return bool
-     */
-    public function delete(User $authUser, $resource)
-    {
-        return $this->hasAccessToResource($authUser, $resource);
-    }
-
-    /**
      * Determine if an authenticated user has access to a resource.
      *
      * @param User $authUser
@@ -85,5 +61,29 @@ class ResourcePolicy
         }
 
         return false;
+    }
+
+    /**
+     * Update a resource.
+     *
+     * @param User $authUser
+     * @param mixed $resource
+     * @return bool
+     */
+    public function update(User $authUser, $resource)
+    {
+        return $this->hasAccessToResource($authUser, $resource);
+    }
+
+    /**
+     * Delete a resource.
+     *
+     * @param User $authUser
+     * @param mixed $resource
+     * @return bool
+     */
+    public function delete(User $authUser, $resource)
+    {
+        return $this->hasAccessToResource($authUser, $resource);
     }
 }

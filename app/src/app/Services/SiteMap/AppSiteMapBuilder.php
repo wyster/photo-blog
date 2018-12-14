@@ -2,24 +2,24 @@
 
 namespace App\Services\SiteMap;
 
+use App\Managers\Photo\PhotoManager;
+use App\Managers\Tag\TagManager;
+use App\Models\Post;
+use App\Models\Tag;
+use App\Services\SiteMap\Contracts\SiteMapBuilder as SiteMapBuilder;
+use Illuminate\Support\Collection;
+use Lib\SiteMap\Contracts\Builder;
+use Lib\SiteMap\Item;
 use function App\Util\url_frontend;
 use function App\Util\url_frontend_photo;
 use function App\Util\url_frontend_tag;
-use App\Models\Post;
-use App\Managers\Photo\Contracts\PhotoManager;
-use App\Managers\Tag\Contracts\TagManager;
-use App\Models\Tag;
-use App\Services\SiteMap\Contracts\SiteMapBuilderService as SiteMapBuilderServiceContract;
-use Lib\SiteMap\Contracts\Builder;
-use Lib\SiteMap\Item;
-use Illuminate\Support\Collection;
 
 /**
- * Class SiteMapBuilderService.
+ * Class AppSiteMapBuilder.
  *
  * @package App\Services\SiteMap
  */
-class SiteMapBuilderService implements SiteMapBuilderServiceContract
+class AppSiteMapBuilder implements SiteMapBuilder
 {
     /**
      * @var Builder
@@ -37,7 +37,7 @@ class SiteMapBuilderService implements SiteMapBuilderServiceContract
     private $tagManager;
 
     /**
-     * SiteMapBuilderService constructor.
+     * AppSiteMapBuilder constructor.
      *
      * @param Builder $siteMapBuilder
      * @param PhotoManager $photoManager

@@ -5,7 +5,7 @@ namespace Api\V1\Http\Controllers;
 use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\TagPlainResource;
-use App\Managers\Tag\Contracts\TagManager;
+use App\Managers\Tag\TagManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;

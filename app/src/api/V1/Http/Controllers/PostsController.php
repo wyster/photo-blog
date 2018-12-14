@@ -5,8 +5,7 @@ namespace Api\V1\Http\Controllers;
 use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\PostResource;
-use App\Managers\Post\Contracts\PostManager;
-use App\Models\Post;
+use App\Managers\Post\PostManager;
 use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -90,7 +89,8 @@ class PostsController extends Controller
      *             "exposure_time": "1/160",
      *             "aperture": "f/11.0",
      *             "iso": 200,
-     *             "taken_at": "2099-12-31T23:59:59+00:00"
+     *             "taken_at": "2099-12-31T23:59:59+00:00",
+     *             "software": "Software Name"
      *         },
      *         "thumbnails": [
      *             "medium": {
@@ -170,7 +170,8 @@ class PostsController extends Controller
      *             "exposure_time": "1/160",
      *             "aperture": "f/11.0",
      *             "iso": 200,
-     *             "taken_at": "2099-12-31T23:59:59+00:00"
+     *             "taken_at": "2099-12-31T23:59:59+00:00",
+     *             "software": "Software Name"
      *         },
      *         "thumbnails": [
      *             "medium": {
@@ -239,7 +240,8 @@ class PostsController extends Controller
      *             "exposure_time": "1/160",
      *             "aperture": "f/11.0",
      *             "iso": 200,
-     *             "taken_at": "2099-12-31T23:59:59+00:00"
+     *             "taken_at": "2099-12-31T23:59:59+00:00",
+     *             "software": "Software Name"
      *         },
      *         "thumbnails": [
      *             "medium": {
@@ -304,7 +306,8 @@ class PostsController extends Controller
      *             "exposure_time": "1/160",
      *             "aperture": "f/11.0",
      *             "iso": 200,
-     *             "taken_at": "2099-12-31T23:59:59+00:00"
+     *             "taken_at": "2099-12-31T23:59:59+00:00",
+     *             "software": "Software Name"
      *         },
      *         "thumbnails": [
      *             "medium": {
@@ -369,7 +372,8 @@ class PostsController extends Controller
      *             "exposure_time": "1/160",
      *             "aperture": "f/11.0",
      *             "iso": 200,
-     *             "taken_at": "2099-12-31T23:59:59+00:00"
+     *             "taken_at": "2099-12-31T23:59:59+00:00",
+     *             "software": "Software Name"
      *         },
      *         "thumbnails": [
      *             "medium": {
@@ -445,7 +449,8 @@ class PostsController extends Controller
      *                     "exposure_time": "1/160",
      *                     "aperture": "f/11.0",
      *                     "iso": 200,
-     *                     "taken_at": "2099-12-31T23:59:59+00:00"
+     *                     "taken_at": "2099-12-31T23:59:59+00:00",
+     *                     "software": "Software Name"
      *                 },
      *                 "thumbnails": [
      *                     "medium": {

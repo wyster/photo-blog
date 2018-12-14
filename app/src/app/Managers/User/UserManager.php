@@ -2,7 +2,6 @@
 
 namespace App\Managers\User;
 
-use App\Managers\User\Contracts\UserManager as UserManagerContract;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Hashing\Hasher;
@@ -14,7 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  *
  * @package App\Managers\User
  */
-class UserManager implements UserManagerContract
+class UserManager
 {
     /**
      * @var Database
@@ -46,7 +45,10 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Create a user.
+     *
+     * @param array $attributes
+     * @return User
      */
     public function create(array $attributes): User
     {
@@ -69,7 +71,11 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Update a user.
+     *
+     * @param User $user
+     * @param array $attributes
+     * @return void
      */
     public function update(User $user, array $attributes): void
     {
@@ -87,7 +93,10 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a user by ID.
+     *
+     * @param int $id
+     * @return User
      */
     public function getById(int $id): User
     {
@@ -99,7 +108,10 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a user by name.
+     *
+     * @param string $name
+     * @return User
      */
     public function getByName(string $name): User
     {
@@ -112,20 +124,11 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getByEmail(string $email): User
-    {
-        $user = (new User)
-            ->newQuery()
-            ->whereEmailEquals($email)
-            ->firstOrFail();
-
-        return $user;
-    }
-
-    /**
-     * @inheritdoc
+     * Get a user by credentials.
+     *
+     * @param string $email
+     * @param string $password
+     * @return User
      */
     public function getByCredentials(string $email, string $password): User
     {
@@ -139,7 +142,26 @@ class UserManager implements UserManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a user by email.
+     *
+     * @param string $email
+     * @return User
+     */
+    public function getByEmail(string $email): User
+    {
+        $user = (new User)
+            ->newQuery()
+            ->whereEmailEquals($email)
+            ->firstOrFail();
+
+        return $user;
+    }
+
+    /**
+     * Delete a user.
+     *
+     * @param User $user
+     * @return void
      */
     public function delete(User $user): void
     {

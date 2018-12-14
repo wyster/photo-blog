@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\ValueObjects\Coordinates;
 use App\Models\Builders\LocationBuilder;
 use App\Models\Tables\Constant;
+use App\ValueObjects\Coordinates;
 use App\ValueObjects\Latitude;
 use App\ValueObjects\Longitude;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +12,9 @@ use Illuminate\Support\Str;
 
 /**
  * Class Location.
+ *
+ * Note: Laravel does not support spatial types.
+ * See: https://dev.mysql.com/doc/refman/5.7/en/spatial-type-overview.html
  *
  * @property int id
  * @property Coordinates coordinates
@@ -22,8 +25,11 @@ class Location extends Model
     /**
      * @inheritdoc
      */
+    public $timestamps = false;
+    /**
+     * @inheritdoc
+     */
     protected $table = Constant::TABLE_LOCATIONS;
-
     /**
      * @inheritdoc
      */
@@ -32,14 +38,6 @@ class Location extends Model
     ];
 
     /**
-     * @inheritdoc
-     */
-    public $timestamps = false;
-
-    /**
-     * Note: Laravel does not support spatial types.
-     * See: https://dev.mysql.com/doc/refman/5.7/en/spatial-type-overview.html
-     *
      * @param Coordinates $coordinates
      * @return $this
      */
@@ -53,9 +51,6 @@ class Location extends Model
     }
 
     /**
-     * Note: Laravel does not support spatial types.
-     * See: https://dev.mysql.com/doc/refman/5.7/en/spatial-type-overview.html
-     *
      * @return Coordinates
      */
     public function getCoordinatesAttribute(): Coordinates

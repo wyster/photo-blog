@@ -2,7 +2,7 @@
 
 namespace Console\Commands;
 
-use App\Managers\User\Contracts\UserManager;
+use App\Managers\User\UserManager;
 use Illuminate\Console\Command;
 
 /**

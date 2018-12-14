@@ -19,16 +19,15 @@ class Thumbnail extends Model
     /**
      * @inheritdoc
      */
+    public $timestamps = false;
+    /**
+     * @inheritdoc
+     */
     protected $fillable = [
         'path',
         'width',
         'height',
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $timestamps = false;
 
     /**
      * @inheritdoc

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Routing\Controller;
-use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
  * Class IndexController.

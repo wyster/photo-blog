@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Rss\Contracts\RssBuilderService;
+use App\Services\Rss\Contracts\RssBuilder;
 use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Http\Response;
@@ -22,7 +22,7 @@ class RssController extends Controller
     private $responseFactory;
 
     /**
-     * @var RssBuilderService
+     * @var RssBuilder
      */
     private $rssBuilder;
 
@@ -40,11 +40,11 @@ class RssController extends Controller
      * RssController constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param RssBuilderService $rssBuilder
+     * @param RssBuilder $rssBuilder
      * @param CacheManager $cacheManager
      * @param Config $config
      */
-    public function __construct(ResponseFactory $responseFactory, RssBuilderService $rssBuilder, CacheManager $cacheManager, Config $config)
+    public function __construct(ResponseFactory $responseFactory, RssBuilder $rssBuilder, CacheManager $cacheManager, Config $config)
     {
         $this->responseFactory = $responseFactory;
         $this->rssBuilder = $rssBuilder;

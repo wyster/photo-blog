@@ -3,8 +3,7 @@
 namespace Api\V1\Http\Controllers;
 
 use Api\V1\Http\Resources\PhotoResource;
-use App\Managers\Photo\Contracts\PhotoManager;
-use App\Models\Photo;
+use App\Managers\Photo\PhotoManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -67,7 +66,8 @@ class PhotosController extends Controller
      *         "exposure_time": "1/160",
      *         "aperture": "f/11.0",
      *         "iso": 200,
-     *         "taken_at": "2099-12-31T23:59:59+00:00"
+     *         "taken_at": "2099-12-31T23:59:59+00:00",
+     *         "software": "Software Name"
      *     },
      *     "thumbnails": [
      *         "medium": {
@@ -127,7 +127,8 @@ class PhotosController extends Controller
      *         "exposure_time": "1/160",
      *         "aperture": "f/11.0",
      *         "iso": 200,
-     *         "taken_at": "2099-12-31T23:59:59+00:00"
+     *         "taken_at": "2099-12-31T23:59:59+00:00",
+     *         "software": "Software Name"
      *     },
      *     "thumbnails": [
      *         "medium": {

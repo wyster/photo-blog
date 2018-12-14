@@ -4,9 +4,9 @@ namespace App\Util;
 
 /**
  * @param $value
- * @return null|bool
+ * @return bool
  */
-function toBool($value): bool
+function to_bool($value): bool
 {
     return (bool) $value;
 }
@@ -15,7 +15,7 @@ function toBool($value): bool
  * @param $value
  * @return null|int
  */
-function toIntOrNull($value): ?int
+function to_int($value): ?int
 {
     if (is_numeric($value) && $value == 0) {
         return (int) $value;
@@ -36,7 +36,7 @@ function toIntOrNull($value): ?int
  * @param $value
  * @return null|float
  */
-function toFloatOrNull($value): ?float
+function to_float($value): ?float
 {
     if (is_numeric($value) && $value == 0) {
         return (float) $value;
@@ -57,7 +57,7 @@ function toFloatOrNull($value): ?float
  * @param $value
  * @return null|string
  */
-function toStringOrNull($value): ?string
+function to_string($value): ?string
 {
     return $value ? (string) $value : null;
 }
@@ -66,7 +66,7 @@ function toStringOrNull($value): ?string
  * @param $value
  * @return null|array
  */
-function toArrayOrNull($value): ?array
+function to_array($value): ?array
 {
     return $value ? (array) $value : null;
 }
@@ -76,7 +76,7 @@ function toArrayOrNull($value): ?array
  * @param string $className
  * @return null|object
  */
-function toClassObjectOrNull($value, string $className)
+function to_object($value, string $className)
 {
     return $value ? new $className($value) : null;
 }

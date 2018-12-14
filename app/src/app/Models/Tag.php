@@ -20,14 +20,13 @@ class Tag extends Model
     /**
      * @inheritdoc
      */
-    protected $fillable = [
-        'value',
-    ];
-
+    public $timestamps = false;
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    protected $fillable = [
+        'value',
+    ];
 
     /**
      * @inheritdoc
@@ -39,6 +38,14 @@ class Tag extends Model
         static::deleting(function (self $tag) {
             $tag->posts()->detach();
         });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_TAGS);
     }
 
     /**
@@ -55,14 +62,6 @@ class Tag extends Model
     public function newQuery(): TagBuilder
     {
         return parent::newQuery();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_TAGS);
     }
 
     /**

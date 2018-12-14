@@ -9,7 +9,14 @@ namespace App\ValueObjects;
  */
 final class Coordinates
 {
+    /**
+     * @var Latitude
+     */
     private $latitude;
+
+    /**
+     * @var Longitude
+     */
     private $longitude;
 
     /**
@@ -22,6 +29,14 @@ final class Coordinates
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->getLatitude(), $this->getLongitude());
     }
 
     /**
@@ -38,13 +53,5 @@ final class Coordinates
     public function getLongitude(): Longitude
     {
         return $this->longitude;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return sprintf('%s %s', $this->getLatitude(), $this->getLongitude());
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Api\V1\Http\Resources;
 
-use function App\Util\html_purify;
 use App\Models\Tag;
-use App\Util\CastValue;
 use Illuminate\Http\Resources\Json\Resource;
+use function App\Util\html_purify;
+use function App\Util\to_string;
 
 /**
  * Class TagPlainResource.
@@ -25,7 +25,7 @@ class TagPlainResource extends Resource
     public function toArray($request)
     {
         return [
-            'value' => CastValue::toStringOrNull(html_purify($this->resource->value)),
+            'value' => to_string(html_purify($this->resource->value)),
         ];
     }
 }

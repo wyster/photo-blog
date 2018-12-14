@@ -4,29 +4,29 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropPhotosTagsTable extends Migration
+class AddMetaColumnToPhotosTable extends Migration
 {
     /**
      * Run the migrations.
+     *
      * @return void
-     * @throws Throwable
      */
     public function up()
     {
-        Schema::dropIfExists('photos_tags');
+        Schema::table('photos', function (Blueprint $table) {
+            $table->json('metadata')->after('avg_color');
+        });
     }
 
     /**
      * Reverse the migrations.
+     *
      * @return void
-     * @throws Throwable
      */
     public function down()
     {
-        Schema::create('photos_tags', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('photo_id');
-            $table->unsignedInteger('tag_id');
+        Schema::table('photos', function (Blueprint $table) {
+            $table->dropColumn('metadata');
         });
     }
 }

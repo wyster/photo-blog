@@ -18,14 +18,13 @@ class Subscription extends Model
     /**
      * @inheritdoc
      */
-    protected $fillable = [
-        'email',
-    ];
-
+    public $timestamps = false;
     /**
      * @inheritdoc
      */
-    public $timestamps = false;
+    protected $fillable = [
+        'email',
+    ];
 
     /**
      * @inheritdoc

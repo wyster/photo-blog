@@ -29,14 +29,6 @@ class PhotoBuilder extends Builder
     /**
      * @return $this
      */
-    public function withExif()
-    {
-        return $this->with('exif');
-    }
-
-    /**
-     * @return $this
-     */
     public function withThumbnails()
     {
         return $this->with('thumbnails');

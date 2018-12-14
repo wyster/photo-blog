@@ -3,8 +3,8 @@
 namespace App\Models\Builders;
 
 use App\Models\Tables\Constant;
-use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class PostBuilder.
@@ -35,7 +35,7 @@ class PostBuilder extends Builder
      */
     public function withPhotos()
     {
-        return $this->with('photos', 'photos.thumbnails', 'photos.exif');
+        return $this->with('photos', 'photos.thumbnails');
     }
 
     /**

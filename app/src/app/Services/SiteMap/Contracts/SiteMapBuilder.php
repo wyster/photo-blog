@@ -9,7 +9,7 @@ use Lib\SiteMap\Contracts\Builder;
  *
  * @package App\Services\SiteMap\Contracts
  */
-interface SiteMapBuilderService
+interface SiteMapBuilder
 {
     /**
      * Build the sitemap.

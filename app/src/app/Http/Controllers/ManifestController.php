@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Manifest\Contracts\ManifestService;
+use App\Services\Manifest\Contracts\Manifest;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 
@@ -19,7 +19,7 @@ class ManifestController extends Controller
     private $responseFactory;
 
     /**
-     * @var ManifestService
+     * @var Manifest
      */
     private $manifest;
 
@@ -27,9 +27,9 @@ class ManifestController extends Controller
      * ManifestController constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param ManifestService $manifest
+     * @param Manifest $manifest
      */
-    public function __construct(ResponseFactory $responseFactory, ManifestService $manifest)
+    public function __construct(ResponseFactory $responseFactory, Manifest $manifest)
     {
         $this->responseFactory = $responseFactory;
         $this->manifest = $manifest;

@@ -2,24 +2,24 @@
 
 namespace App\Services\Rss;
 
-use function App\Util\url_frontend_photo;
-use function App\Util\url_storage;
-use App\Models\Post;
 use App\Managers\Photo\Contracts\PhotoManager;
-use App\Services\Rss\Contracts\RssBuilderService as RssBuilderServiceContract;
+use App\Models\Post;
+use App\Services\Rss\Contracts\RssBuilder;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
-use Lib\Rss\Contracts\Builder;
 use Lib\Rss\Category;
 use Lib\Rss\Channel;
-use Lib\Rss\Item;
+use Lib\Rss\Contracts\Builder;
 use Lib\Rss\Enclosure;
+use Lib\Rss\Item;
+use function App\Util\url_frontend_photo;
+use function App\Util\url_storage;
 
 /**
- * Class RssBuilderService.
+ * Class AppRssBuilder.
  *
  * @package App\Services\Rss
  */
-class RssBuilderService implements RssBuilderServiceContract
+class AppRssBuilder implements RssBuilder
 {
     /**
      * @var Storage
@@ -37,7 +37,7 @@ class RssBuilderService implements RssBuilderServiceContract
     private $photoManager;
 
     /**
-     * RssBuilderService constructor.
+     * AppRssBuilder constructor.
      *
      * @param Storage $storage
      * @param Builder $rssBuilder
@@ -48,6 +48,16 @@ class RssBuilderService implements RssBuilderServiceContract
         $this->storage = $storage;
         $this->rssBuilder = $rssBuilder;
         $this->photoManager = $photoManager;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function build(): Builder
+    {
+        return $this->rssBuilder
+            ->setChannel($this->provideChannel())
+            ->setItems($this->provideItems());
     }
 
     /**
@@ -81,7 +91,7 @@ class RssBuilderService implements RssBuilderServiceContract
             ->map(function (Post $post) {
                 return (new Item)
                     ->setTitle($post->description)
-                    ->setDescription($post->photo->exif->toString())
+                    /*->setDescription($post->photo->exif->toString())*/
                     ->setLink(url_frontend_photo($post->id))
                     ->setGuid(url_frontend_photo($post->id))
                     ->setPubDate($post->photo->created_at->toAtomString())
@@ -101,15 +111,5 @@ class RssBuilderService implements RssBuilderServiceContract
                     );
             })
             ->toArray();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function build(): Builder
-    {
-        return $this->rssBuilder
-            ->setChannel($this->provideChannel())
-            ->setItems($this->provideItems());
     }
 }

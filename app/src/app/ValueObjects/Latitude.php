@@ -11,6 +11,9 @@ use InvalidArgumentException;
  */
 final class Latitude
 {
+    /**
+     * @var float
+     */
     private $value;
 
     /**
@@ -38,18 +41,18 @@ final class Latitude
     }
 
     /**
-     * @return float
-     */
-    public function getValue(): float
-    {
-        return $this->value;
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
     {
         return (string) $this->getValue();
+    }
+
+    /**
+     * @return float
+     */
+    public function getValue(): float
+    {
+        return $this->value;
     }
 }

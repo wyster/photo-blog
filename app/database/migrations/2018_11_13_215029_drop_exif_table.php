@@ -4,29 +4,30 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropPhotosTagsTable extends Migration
+class DropExifTable extends Migration
 {
     /**
      * Run the migrations.
+     *
      * @return void
-     * @throws Throwable
      */
     public function up()
     {
-        Schema::dropIfExists('photos_tags');
+        Schema::drop('exif');
     }
 
     /**
      * Reverse the migrations.
+     *
      * @return void
-     * @throws Throwable
      */
     public function down()
     {
-        Schema::create('photos_tags', function (Blueprint $table) {
+        Schema::create('exif', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('photo_id');
-            $table->unsignedInteger('tag_id');
+            $table->longText('data');
+            $table->foreign('photo_id', 'fk__exif_photo_id__photos_id')->references('id')->on('photos');
         });
     }
 }

@@ -2,13 +2,14 @@
 
 namespace App\Managers\Photo;
 
-use function App\Util\validator_filter_attributes;
+use App\Models\Tables\Constant;
 use App\Rules\LatitudeRule;
 use App\Rules\LongitudeRule;
-use App\Models\Tables\Constant;
+use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
-use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Validation\ValidationException;
+use function App\Util\validator_filter_attributes;
 
 /**
  * Class PhotoValidator.
@@ -42,6 +43,7 @@ class PhotoValidator
     /**
      * @param array $attributes
      * @return array
+     * @throws ValidationException
      */
     public function validateForCreate(array $attributes): array
     {
@@ -73,6 +75,7 @@ class PhotoValidator
     /**
      * @param array $attributes
      * @return array
+     * @throws ValidationException
      */
     public function validateForUpdate(array $attributes): array
     {

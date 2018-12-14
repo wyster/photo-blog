@@ -3,11 +3,11 @@
 namespace App\Services\Manifest\Contracts;
 
 /**
- * Interface ManifestService.
+ * Interface Manifest.
  *
  * @package App\Services\SiteMap\Contracts
  */
-interface ManifestService
+interface Manifest
 {
     /**
      * Get manifest content.

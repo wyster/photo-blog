@@ -5,11 +5,11 @@ namespace App\Services\Rss\Contracts;
 use Lib\Rss\Contracts\Builder;
 
 /**
- * Interface RssBuilderService.
+ * Interface RssBuilder.
  *
  * @package App\Services\Rss\Contracts
  */
-interface RssBuilderService
+interface RssBuilder
 {
     /**
      * Build the RSS feed.

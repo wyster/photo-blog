@@ -2,18 +2,17 @@
 
 namespace App\Managers\Subscription;
 
-use function App\Util\str_unique;
 use App\Models\Builders\SubscriptionBuilder;
-use App\Managers\Subscription\Contracts\SubscriptionManager as SubscriptionManagerContract;
 use App\Models\Subscription;
 use Illuminate\Database\ConnectionInterface as Database;
+use function App\Util\str_unique;
 
 /**
  * Class SubscriptionManager.
  *
  * @package App\Managers\Subscription
  */
-class SubscriptionManager implements SubscriptionManagerContract
+class SubscriptionManager
 {
     /**
      * @var Database
@@ -38,7 +37,10 @@ class SubscriptionManager implements SubscriptionManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Create a subscription by email.
+     *
+     * @param array $attributes
+     * @return Subscription
      */
     public function create(array $attributes): Subscription
     {
@@ -54,7 +56,10 @@ class SubscriptionManager implements SubscriptionManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Get a subscription by token.
+     *
+     * @param string $token
+     * @return Subscription
      */
     public function getByToken(string $token): Subscription
     {
@@ -67,7 +72,12 @@ class SubscriptionManager implements SubscriptionManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Paginate over subscriptions.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @param array $filters
+     * @return mixed
      */
     public function paginate(int $page, int $perPage, array $filters = [])
     {
@@ -95,7 +105,10 @@ class SubscriptionManager implements SubscriptionManagerContract
     }
 
     /**
-     * @inheritdoc
+     * Delete a subscription.
+     *
+     * @param Subscription $subscription
+     * @return void
      */
     public function delete(Subscription $subscription): void
     {

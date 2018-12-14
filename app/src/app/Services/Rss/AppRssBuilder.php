@@ -2,7 +2,7 @@
 
 namespace App\Services\Rss;
 
-use App\Managers\Photo\Contracts\PhotoManager;
+use App\Managers\Photo\PhotoManager;
 use App\Models\Post;
 use App\Services\Rss\Contracts\RssBuilder;
 use Illuminate\Contracts\Filesystem\Factory as Storage;

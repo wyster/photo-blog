@@ -2,7 +2,7 @@
 
 namespace Console\Commands;
 
-use App\Managers\User\Contracts\UserManager;
+use App\Managers\User\UserManager;
 use App\Models\Role;
 use Illuminate\Console\Command;
 use function App\Util\url_frontend_sign_in;

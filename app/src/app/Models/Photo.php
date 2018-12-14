@@ -17,6 +17,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property string path
  * @property string avg_color
  * @property array metadata
+ *
+ * @property string|null manufacturer
+ * @property string|null model
+ * @property string|null exposure_time
+ * @property string|null aperture
+ * @property string|null iso
+ * @property string|null taken_at
+ * @property string|null software
+ *
  * @property Carbon created_at
  * @property Carbon updated_at
  * @property User createdByUser
@@ -24,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection thumbnails
  * @property Post post
  * @property Collection posts
+ *
  * @package App\Models
  */
 class Photo extends Model
@@ -148,7 +158,11 @@ class Photo extends Model
      */
     public function getExposureTimeAttribute(): ?string
     {
-        $raw = (string) $this->metadata['exif.ExposureTime'];
+        $raw = $this->metadata['exif.ExposureTime'] ?? null;
+
+        if (!is_string($raw)) {
+            return null;
+        }
 
         [$numerator, $denominator] = explode('/', $raw);
 
@@ -166,7 +180,11 @@ class Photo extends Model
      */
     public function getApertureAttribute(): ?string
     {
-        $raw = (string) $this->metadata['exif.FNumber'];
+        $raw = $this->metadata['exif.FNumber'] ?? null;
+
+        if (!is_string($raw)) {
+            return null;
+        }
 
         [$numerator, $denominator] = explode('/', $raw);
 
@@ -192,13 +210,13 @@ class Photo extends Model
      */
     public function getTakenAtAttribute(): ?string
     {
-        $takenAt = $this->metadata['exif.DateTimeOriginal'];
+        $raw = $this->metadata['exif.DateTimeOriginal'] ?? null;
 
-        if (!$takenAt) {
+        if (!is_string($raw) && !is_numeric($raw)) {
             return null;
         }
 
-        return new Carbon($takenAt);
+        return new Carbon($raw);
     }
 
     /**

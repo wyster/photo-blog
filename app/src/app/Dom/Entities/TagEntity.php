@@ -41,6 +41,14 @@ final class TagEntity extends AbstractEntity
     }
 
     /**
+     * @inheritdoc
+     */
+    public function __toString(): string
+    {
+        return $this->getValue();
+    }
+
+    /**
      * @return string
      */
     public function getValue(): string
@@ -54,7 +62,7 @@ final class TagEntity extends AbstractEntity
     public function toArray(): array
     {
         return [
-            'value' => $this->value,
+            'value' => $this->getValue(),
         ];
     }
 }

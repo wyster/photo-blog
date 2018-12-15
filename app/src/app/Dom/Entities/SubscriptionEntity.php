@@ -35,9 +35,9 @@ final class SubscriptionEntity extends AbstractEntity
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    public function toValue(): string
+    public function __toString(): string
     {
         return $this->getEmail();
     }

@@ -2,17 +2,19 @@
 
 namespace App\Managers\Subscription;
 
+use App\Managers\Subscription\Contracts\SubscriptionManager;
 use App\Models\Builders\SubscriptionBuilder;
 use App\Models\Subscription;
+use App\ValueObjects\SubscriptionEntity;
 use Illuminate\Database\ConnectionInterface as Database;
 use function App\Util\str_unique;
 
 /**
- * Class SubscriptionManager.
+ * Class ARSubscriptionManager.
  *
  * @package App\Managers\Subscription
  */
-class SubscriptionManager
+class ARSubscriptionManager implements SubscriptionManager
 {
     /**
      * @var Database
@@ -37,12 +39,9 @@ class SubscriptionManager
     }
 
     /**
-     * Create a subscription by email.
-     *
-     * @param array $attributes
-     * @return Subscription
+     * @inheritdoc
      */
-    public function create(array $attributes): Subscription
+    public function create(array $attributes): SubscriptionEntity
     {
         $attributes = $this->validator->validateForCreate($attributes);
 
@@ -52,32 +51,24 @@ class SubscriptionManager
 
         $subscription->save();
 
-        return $subscription;
+        return $subscription->toEntity();
     }
 
     /**
-     * Get a subscription by token.
-     *
-     * @param string $token
-     * @return Subscription
+     * @inheritdoc
      */
-    public function getByToken(string $token): Subscription
+    public function getByToken(string $token): SubscriptionEntity
     {
         $subscription = (new Subscription)
             ->newQuery()
             ->whereTokenEquals($token)
             ->firstOrFail();
 
-        return $subscription;
+        return $subscription->toEntity();
     }
 
     /**
-     * Paginate over subscriptions.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @param array $filters
-     * @return mixed
+     * @inheritdoc
      */
     public function paginate(int $page, int $perPage, array $filters = [])
     {
@@ -101,17 +92,22 @@ class SubscriptionManager
 
         $paginator = $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
 
+        $paginator->getCollection()->transform(function (Subscription $subscription) {
+            return $subscription->toEntity();
+        });
+
         return $paginator;
     }
 
     /**
-     * Delete a subscription.
-     *
-     * @param Subscription $subscription
-     * @return void
+     * @inheritdoc
      */
-    public function delete(Subscription $subscription): void
+    public function deleteByToken(string $token): void
     {
-        $subscription->delete();
+        (new Subscription)
+            ->newQuery()
+            ->whereTokenEquals($token)
+            ->firstOrFail()
+            ->delete();
     }
 }

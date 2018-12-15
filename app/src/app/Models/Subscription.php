@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Builders\SubscriptionBuilder;
+use App\ValueObjects\SubscriptionEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -40,5 +41,13 @@ class Subscription extends Model
     public function newQuery(): SubscriptionBuilder
     {
         return parent::newQuery();
+    }
+
+    /**
+     * @return SubscriptionEntity
+     */
+    public function toEntity(): SubscriptionEntity
+    {
+        return SubscriptionEntity::fromArray($this->toArray());
     }
 }

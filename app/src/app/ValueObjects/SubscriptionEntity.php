@@ -4,13 +4,14 @@ namespace App\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * Class SubscriptionEntity.
  *
  * @package App\ValueObjects
  */
-final class SubscriptionEntity implements Arrayable
+final class SubscriptionEntity implements Arrayable, JsonSerializable
 {
     /**
      * @var int
@@ -62,6 +63,41 @@ final class SubscriptionEntity implements Arrayable
     }
 
     /**
+     * Create a new instance from array of attributes.
+     *
+     * @param array $attributes
+     * @return SubscriptionEntity
+     */
+    public static function fromArray(array $attributes)
+    {
+        return new static($attributes);
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
+    /**
      * @inheritdoc
      */
     public function __toString(): string
@@ -75,6 +111,14 @@ final class SubscriptionEntity implements Arrayable
     public function getValue(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 
     /**

@@ -6,7 +6,7 @@ use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Requests\ReCaptchaRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\SubscriptionPlainResource;
-use App\Managers\Subscription\SubscriptionManager;
+use App\Managers\Subscription\Contracts\SubscriptionManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -134,9 +134,7 @@ class SubscriptionsController extends Controller
      */
     public function delete(string $token): JsonResponse
     {
-        $subscription = $this->subscriptionManager->getByToken($token);
-
-        $this->subscriptionManager->delete($subscription);
+        $this->subscriptionManager->deleteByToken($token);
 
         return $this->responseFactory->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

@@ -145,17 +145,6 @@ class ImagickImageProcessor implements ImageProcessor
     }
 
     /**
-     * Get fully specified path to the thumbnail file.
-     *
-     * @param string|null $prefix
-     * @return string
-     */
-    private function getThumbnailAbsolutePath(?string $prefix): string
-    {
-        return pathinfo($this->path, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . $this->getThumbnailName($prefix);
-    }
-
-    /**
      * Get thumbnail file name.
      *
      * @param string $prefix
@@ -164,5 +153,16 @@ class ImagickImageProcessor implements ImageProcessor
     private function getThumbnailName(string $prefix = 'thumbnail'): string
     {
         return pathinfo($this->storage->path($this->path), PATHINFO_FILENAME) . '_' . $prefix . '.' . pathinfo($this->storage->path($this->path), PATHINFO_EXTENSION);
+    }
+
+    /**
+     * Get fully specified path to the thumbnail file.
+     *
+     * @param string|null $prefix
+     * @return string
+     */
+    private function getThumbnailAbsolutePath(?string $prefix): string
+    {
+        return pathinfo($this->path, PATHINFO_DIRNAME) . DIRECTORY_SEPARATOR . $this->getThumbnailName($prefix);
     }
 }

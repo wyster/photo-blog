@@ -78,6 +78,11 @@ class AppServiceProvider extends ServiceProvider
     protected function registerAppServices(): void
     {
         $this->app->bind(
+            \App\Managers\Subscription\Contracts\SubscriptionManager::class,
+            \App\Managers\Subscription\ARSubscriptionManager::class
+        );
+
+        $this->app->bind(
             \App\Services\Image\Contracts\ImageProcessor::class,
             \App\Services\Image\ImagickImageProcessor::class
         );

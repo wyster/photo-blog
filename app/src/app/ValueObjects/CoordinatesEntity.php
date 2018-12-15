@@ -3,36 +3,36 @@
 namespace App\ValueObjects;
 
 /**
- * Class Coordinates.
+ * Class CoordinatesEntity.
  *
  * @package App\ValueObjects
  */
-final class Coordinates
+final class CoordinatesEntity
 {
     /**
-     * @var Latitude
+     * @var LatitudeEntity
      */
     private $latitude;
 
     /**
-     * @var Longitude
+     * @var LongitudeEntity
      */
     private $longitude;
 
     /**
-     * Coordinates constructor.
+     * CoordinatesEntity constructor.
      *
-     * @param Latitude $latitude
-     * @param Longitude $longitude
+     * @param LatitudeEntity $latitude
+     * @param LongitudeEntity $longitude
      */
-    public function __construct(Latitude $latitude, Longitude $longitude)
+    public function __construct(LatitudeEntity $latitude, LongitudeEntity $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function __toString(): string
     {
@@ -40,17 +40,17 @@ final class Coordinates
     }
 
     /**
-     * @return Latitude
+     * @return LatitudeEntity
      */
-    public function getLatitude(): Latitude
+    public function getLatitude(): LatitudeEntity
     {
         return $this->latitude;
     }
 
     /**
-     * @return Longitude
+     * @return LongitudeEntity
      */
-    public function getLongitude(): Longitude
+    public function getLongitude(): LongitudeEntity
     {
         return $this->longitude;
     }

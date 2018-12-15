@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\ValueObjects\Latitude;
+use App\ValueObjects\LatitudeEntity;
 use Illuminate\Contracts\Validation\Rule;
 use InvalidArgumentException;
 
@@ -19,7 +19,7 @@ class LatitudeRule implements Rule
     public function passes($attribute, $value)
     {
         try {
-            new Latitude($value);
+            new LatitudeEntity($value);
             return true;
         } catch (InvalidArgumentException $e) {
             return false;

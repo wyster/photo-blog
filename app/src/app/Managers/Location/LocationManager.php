@@ -3,9 +3,9 @@
 namespace App\Managers\Location;
 
 use App\Models\Location;
-use App\ValueObjects\Coordinates;
-use App\ValueObjects\Latitude;
-use App\ValueObjects\Longitude;
+use App\ValueObjects\CoordinatesEntity;
+use App\ValueObjects\LatitudeEntity;
+use App\ValueObjects\LongitudeEntity;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**
@@ -47,7 +47,7 @@ class LocationManager
     {
         $attributes = $this->validator->validateForCreate($attributes);
 
-        $coordinates = new Coordinates(new Latitude($attributes['latitude']), new Longitude($attributes['longitude']));
+        $coordinates = new CoordinatesEntity(new LatitudeEntity($attributes['latitude']), new LongitudeEntity($attributes['longitude']));
 
         $location = (new Location)->fill(['coordinates' => $coordinates]);
 

@@ -5,11 +5,11 @@ namespace App\ValueObjects;
 use InvalidArgumentException;
 
 /**
- * Class Latitude.
+ * Class LongitudeEntity.
  *
  * @package App\ValueObjects
  */
-final class Latitude
+final class LongitudeEntity
 {
     /**
      * @var float
@@ -17,7 +17,7 @@ final class Latitude
     private $value;
 
     /**
-     * Latitude constructor.
+     * LongitudeEntity constructor.
      *
      * @param float $value
      */
@@ -35,13 +35,13 @@ final class Latitude
      */
     private function assertValue(float $value): void
     {
-        if ($value < -90 && $value > 90) {
-            throw new InvalidArgumentException('Invalid latitude value.');
+        if ($value < -180 && $value > 180) {
+            throw new InvalidArgumentException('Invalid longitude value.');
         }
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function __toString(): string
     {

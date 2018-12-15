@@ -14,11 +14,6 @@ use JsonSerializable;
 final class SubscriptionEntity implements Arrayable, JsonSerializable
 {
     /**
-     * @var int
-     */
-    private $id;
-
-    /**
      * @var string
      */
     private $email;
@@ -37,7 +32,6 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     {
         $this->assertAttributes($attributes);
 
-        $this->id = $attributes['id'];
         $this->email = $attributes['email'];
         $this->token = $attributes['token'];
     }
@@ -49,10 +43,6 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
      */
     private function assertAttributes(array $attributes): void
     {
-        if (!isset($attributes['id']) || !is_int($attributes['id'])) {
-            throw new InvalidArgumentException('Invalid id value.');
-        }
-
         if (!isset($attributes['email']) || !is_string($attributes['email'])) {
             throw new InvalidArgumentException('Invalid email value.');
         }
@@ -71,14 +61,6 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     public static function fromArray(array $attributes)
     {
         return new static($attributes);
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -127,7 +109,6 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
             'email' => $this->email,
             'token' => $this->token,
         ];

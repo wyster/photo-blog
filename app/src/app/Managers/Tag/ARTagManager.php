@@ -2,15 +2,17 @@
 
 namespace App\Managers\Tag;
 
+use App\Dom\Contracts\TagManager;
 use App\Models\Tag;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**
- * Class TagManager.
+ * Class ARTagManager.
  *
  * @package App\Managers\Tag
  */
-class TagManager
+class ARTagManager implements TagManager
 {
     /**
      * @var Database
@@ -28,14 +30,9 @@ class TagManager
     }
 
     /**
-     * Paginate over tags.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @param array $filters
-     * @return mixed
+     * @inheritdoc
      */
-    public function paginate(int $page, int $perPage, array $filters = [])
+    public function paginate(int $page, int $perPage, array $filters = []): LengthAwarePaginator
     {
         $query = (new Tag)
             ->newQuery()
@@ -43,6 +40,10 @@ class TagManager
             ->orderByPopularity();
 
         $paginator = $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+
+        $paginator->getCollection()->transform(function (Tag $tag) {
+            return $tag->toEntity();
+        });
 
         return $paginator;
     }

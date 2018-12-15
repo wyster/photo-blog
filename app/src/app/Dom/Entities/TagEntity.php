@@ -2,7 +2,6 @@
 
 namespace App\Dom\Entities;
 
-use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
 
 /**
@@ -10,7 +9,7 @@ use InvalidArgumentException;
  *
  * @package App\Dom\Entities
  */
-final class TagEntity implements Arrayable
+final class TagEntity extends AbstractEntity
 {
     /**
      * @var string
@@ -20,33 +19,25 @@ final class TagEntity implements Arrayable
     /**
      * TagEntity constructor.
      *
-     * @param string $value
+     * @param array $attributes
      */
-    public function __construct(string $value)
+    public function __construct(array $attributes)
     {
-        $this->assertValue($value);
+        parent::__construct($attributes);
 
-        $this->value = $value;
+        $this->assertAttributes($attributes);
+
+        $this->value = $attributes['value'];
     }
 
     /**
-     * @param $value
-     * @return void
-     * @throws InvalidArgumentException
+     * @inheritdoc
      */
-    private function assertValue(string $value): void
+    protected function assertAttributes(array $attributes): void
     {
-        if (!is_string($value)) {
+        if (!isset($attributes['value']) || !is_string($attributes['value'])) {
             throw new InvalidArgumentException('Invalid tag value.');
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return (string) $this->getValue();
     }
 
     /**

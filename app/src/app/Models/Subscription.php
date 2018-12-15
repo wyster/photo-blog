@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Builders\SubscriptionBuilder;
 use App\Dom\Entities\SubscriptionEntity;
+use App\Models\Builders\SubscriptionBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 /**

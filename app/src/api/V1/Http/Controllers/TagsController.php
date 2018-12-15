@@ -5,7 +5,7 @@ namespace Api\V1\Http\Controllers;
 use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\TagPlainResource;
-use App\Managers\Tag\TagManager;
+use App\Managers\Tag\ARTagManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -24,7 +24,7 @@ class TagsController extends Controller
     private $responseFactory;
 
     /**
-     * @var TagManager
+     * @var ARTagManager
      */
     private $tagManager;
 
@@ -32,9 +32,9 @@ class TagsController extends Controller
      * TagsController constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param TagManager $tagManager
+     * @param ARTagManager $tagManager
      */
-    public function __construct(ResponseFactory $responseFactory, TagManager $tagManager)
+    public function __construct(ResponseFactory $responseFactory, ARTagManager $tagManager)
     {
         $this->responseFactory = $responseFactory;
         $this->tagManager = $tagManager;

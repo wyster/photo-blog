@@ -28,7 +28,7 @@ class ARSubscriptionManager implements SubscriptionManager
     private $validator;
 
     /**
-     * SubscriptionManager constructor.
+     * ARSubscriptionManager constructor.
      *
      * @param Database $database
      * @param SubscriptionValidator $validator

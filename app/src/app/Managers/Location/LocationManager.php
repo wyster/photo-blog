@@ -2,10 +2,10 @@
 
 namespace App\Managers\Location;
 
-use App\Models\Location;
 use App\Dom\ValueObjects\Coordinates;
 use App\Dom\ValueObjects\Latitude;
 use App\Dom\ValueObjects\Longitude;
+use App\Models\Location;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**

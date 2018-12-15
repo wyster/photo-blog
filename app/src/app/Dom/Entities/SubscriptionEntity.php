@@ -2,16 +2,14 @@
 
 namespace App\Dom\Entities;
 
-use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
-use JsonSerializable;
 
 /**
  * Class SubscriptionEntity.
  *
  * @package App\Dom\Entities
  */
-final class SubscriptionEntity implements Arrayable, JsonSerializable
+final class SubscriptionEntity extends AbstractEntity
 {
     /**
      * @var string
@@ -30,37 +28,18 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
      */
     public function __construct(array $attributes)
     {
-        $this->assertAttributes($attributes);
+        parent::__construct($attributes);
 
         $this->email = $attributes['email'];
         $this->token = $attributes['token'];
     }
 
     /**
-     * @param $attributes
-     * @return void
-     * @throws InvalidArgumentException
+     * @return string
      */
-    private function assertAttributes(array $attributes): void
+    public function toValue(): string
     {
-        if (!isset($attributes['email']) || !is_string($attributes['email'])) {
-            throw new InvalidArgumentException('Invalid email value.');
-        }
-
-        if (!isset($attributes['token']) || !is_string($attributes['token'])) {
-            throw new InvalidArgumentException('Invalid token value.');
-        }
-    }
-
-    /**
-     * Create a new instance from array of attributes.
-     *
-     * @param array $attributes
-     * @return SubscriptionEntity
-     */
-    public static function fromArray(array $attributes)
-    {
-        return new static($attributes);
+        return $this->getEmail();
     }
 
     /**
@@ -69,6 +48,17 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'email' => $this->getEmail(),
+            'token' => $this->getToken(),
+        ];
     }
 
     /**
@@ -82,35 +72,14 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     /**
      * @inheritdoc
      */
-    public function __toString(): string
+    protected function assertAttributes(array $attributes): void
     {
-        return (string) $this->getValue();
-    }
+        if (!isset($attributes['email']) || !is_string($attributes['email'])) {
+            throw new InvalidArgumentException('Invalid email value.');
+        }
 
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return $this->getEmail();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function toArray(): array
-    {
-        return [
-            'email' => $this->getEmail(),
-            'token' => $this->getToken(),
-        ];
+        if (!isset($attributes['token']) || !is_string($attributes['token'])) {
+            throw new InvalidArgumentException('Invalid token value.');
+        }
     }
 }

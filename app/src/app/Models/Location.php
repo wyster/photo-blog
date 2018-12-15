@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Builders\LocationBuilder;
-use App\Models\Tables\Constant;
 use App\Dom\ValueObjects\Coordinates;
 use App\Dom\ValueObjects\Latitude;
 use App\Dom\ValueObjects\Longitude;
+use App\Models\Builders\LocationBuilder;
+use App\Models\Tables\Constant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 

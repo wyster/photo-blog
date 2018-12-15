@@ -2,7 +2,7 @@
 
 namespace Api\V1\Http\Resources;
 
-use App\Models\Tag;
+use App\Dom\Entities\TagEntity;
 use Illuminate\Http\Resources\Json\Resource;
 use function App\Util\html_purify;
 use function App\Util\to_string;
@@ -15,7 +15,7 @@ use function App\Util\to_string;
 class TagPlainResource extends Resource
 {
     /**
-     * @var Tag
+     * @var TagEntity
      */
     public $resource;
 
@@ -25,7 +25,7 @@ class TagPlainResource extends Resource
     public function toArray($request)
     {
         return [
-            'value' => to_string(html_purify($this->resource->value)),
+            'value' => to_string(html_purify($this->resource->getValue())),
         ];
     }
 }

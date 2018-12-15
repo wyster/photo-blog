@@ -83,6 +83,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \App\Dom\Contracts\TagManager::class,
+            \App\Managers\Tag\ARTagManager::class
+        );
+
+        $this->app->bind(
             \App\Services\Image\Contracts\ImageProcessor::class,
             \App\Services\Image\ImagickImageProcessor::class
         );

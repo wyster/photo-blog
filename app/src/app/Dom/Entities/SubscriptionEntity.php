@@ -39,7 +39,7 @@ final class SubscriptionEntity extends AbstractEntity
      */
     public function __toString(): string
     {
-        return $this->getEmail();
+        return $this->getToken();
     }
 
     /**

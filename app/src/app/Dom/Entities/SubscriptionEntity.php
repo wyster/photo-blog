@@ -92,7 +92,7 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
      */
     public function getValue(): string
     {
-        return $this->email;
+        return $this->getEmail();
     }
 
     /**
@@ -109,8 +109,8 @@ final class SubscriptionEntity implements Arrayable, JsonSerializable
     public function toArray(): array
     {
         return [
-            'email' => $this->email,
-            'token' => $this->token,
+            'email' => $this->getEmail(),
+            'token' => $this->getToken(),
         ];
     }
 }

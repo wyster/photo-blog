@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ValueObjects;
+namespace App\Dom\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * Class SubscriptionEntity.
  *
- * @package App\ValueObjects
+ * @package App\Dom\ValueObjects
  */
 final class SubscriptionEntity implements Arrayable, JsonSerializable
 {

@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\ValueObjects\LatitudeEntity;
+use App\Dom\ValueObjects\LatitudeEntity;
 use Illuminate\Contracts\Validation\Rule;
 use InvalidArgumentException;
 

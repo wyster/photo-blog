@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\ValueObjects\LongitudeEntity;
+use App\Dom\ValueObjects\LongitudeEntity;
 use Illuminate\Contracts\Validation\Rule;
 use InvalidArgumentException;
 

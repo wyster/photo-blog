@@ -2,10 +2,11 @@
 
 namespace App\Managers\Subscription;
 
-use App\Managers\Subscription\Contracts\SubscriptionManager;
+use App\Dom\Contracts\SubscriptionManager;
+use App\Dom\ValueObjects\SubscriptionEntity;
 use App\Models\Builders\SubscriptionBuilder;
 use App\Models\Subscription;
-use App\ValueObjects\SubscriptionEntity;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface as Database;
 use function App\Util\str_unique;
 
@@ -70,7 +71,7 @@ class ARSubscriptionManager implements SubscriptionManager
     /**
      * @inheritdoc
      */
-    public function paginate(int $page, int $perPage, array $filters = [])
+    public function paginate(int $page, int $perPage, array $filters = []): LengthAwarePaginator
     {
         $this->validator->validateForPaginate($filters);
 

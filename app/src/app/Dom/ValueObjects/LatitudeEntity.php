@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ValueObjects;
+namespace App\Dom\ValueObjects;
 
 use InvalidArgumentException;
 
 /**
  * Class LatitudeEntity.
  *
- * @package App\ValueObjects
+ * @package App\Dom\ValueObjects
  */
 final class LatitudeEntity
 {

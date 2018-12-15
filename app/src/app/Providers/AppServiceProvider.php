@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
     protected function registerAppServices(): void
     {
         $this->app->bind(
-            \App\Managers\Subscription\Contracts\SubscriptionManager::class,
+            \App\Dom\Contracts\SubscriptionManager::class,
             \App\Managers\Subscription\ARSubscriptionManager::class
         );
 

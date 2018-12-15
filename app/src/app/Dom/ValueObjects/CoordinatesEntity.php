@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ValueObjects;
+namespace App\Dom\ValueObjects;
 
 /**
  * Class CoordinatesEntity.
  *
- * @package App\ValueObjects
+ * @package App\Dom\ValueObjects
  */
 final class CoordinatesEntity
 {

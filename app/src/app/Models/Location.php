@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Builders\LocationBuilder;
 use App\Models\Tables\Constant;
-use App\ValueObjects\CoordinatesEntity;
-use App\ValueObjects\LatitudeEntity;
-use App\ValueObjects\LongitudeEntity;
+use App\Dom\ValueObjects\CoordinatesEntity;
+use App\Dom\ValueObjects\LatitudeEntity;
+use App\Dom\ValueObjects\LongitudeEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 

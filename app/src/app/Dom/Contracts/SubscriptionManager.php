@@ -1,9 +1,15 @@
 <?php
 
-namespace App\Managers\Subscription\Contracts;
+namespace App\Dom\Contracts;
 
-use App\ValueObjects\SubscriptionEntity;
+use App\Dom\ValueObjects\SubscriptionEntity;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
+/**
+ * Interface SubscriptionManager.
+ *
+ * @package App\Dom\Contracts
+ */
 interface SubscriptionManager
 {
     /**
@@ -28,9 +34,9 @@ interface SubscriptionManager
      * @param int $page
      * @param int $perPage
      * @param array $filters
-     * @return mixed
+     * @return LengthAwarePaginator
      */
-    public function paginate(int $page, int $perPage, array $filters = []);
+    public function paginate(int $page, int $perPage, array $filters = []): LengthAwarePaginator;
 
     /**
      * Delete the subscription by token.

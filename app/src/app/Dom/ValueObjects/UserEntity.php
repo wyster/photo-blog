@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ValueObjects;
+namespace App\Dom\ValueObjects;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
@@ -9,7 +9,7 @@ use InvalidArgumentException;
 /**
  * Class UserEntity.
  *
- * @package App\ValueObjects
+ * @package App\Dom\ValueObjects
  */
 final class UserEntity implements Arrayable
 {

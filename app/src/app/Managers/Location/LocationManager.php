@@ -3,9 +3,9 @@
 namespace App\Managers\Location;
 
 use App\Models\Location;
-use App\ValueObjects\CoordinatesEntity;
-use App\ValueObjects\LatitudeEntity;
-use App\ValueObjects\LongitudeEntity;
+use App\Dom\ValueObjects\CoordinatesEntity;
+use App\Dom\ValueObjects\LatitudeEntity;
+use App\Dom\ValueObjects\LongitudeEntity;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**

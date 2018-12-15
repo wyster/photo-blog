@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Builders\SubscriptionBuilder;
-use App\Dom\ValueObjects\SubscriptionEntity;
+use App\Dom\Entities\SubscriptionEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**

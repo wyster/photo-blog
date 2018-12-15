@@ -2,7 +2,7 @@
 
 namespace Api\V1\Http\Resources;
 
-use App\Dom\ValueObjects\SubscriptionEntity;
+use App\Dom\Entities\SubscriptionEntity;
 use Illuminate\Http\Resources\Json\Resource;
 use function App\Util\html_purify;
 use function App\Util\to_string;

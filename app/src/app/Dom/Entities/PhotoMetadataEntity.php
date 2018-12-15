@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dom\ValueObjects;
+namespace App\Dom\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 /**
  * Class PhotoMetadataEntity.
  *
- * @package App\Dom\ValueObjects
+ * @package App\Dom\Entities
  */
 final class PhotoMetadataEntity implements Arrayable
 {

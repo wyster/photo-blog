@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Builders\LocationBuilder;
 use App\Models\Tables\Constant;
-use App\Dom\ValueObjects\CoordinatesEntity;
-use App\Dom\ValueObjects\LatitudeEntity;
-use App\Dom\ValueObjects\LongitudeEntity;
+use App\Dom\ValueObjects\Coordinates;
+use App\Dom\ValueObjects\Latitude;
+use App\Dom\ValueObjects\Longitude;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
  * See: https://dev.mysql.com/doc/refman/5.7/en/spatial-type-overview.html
  *
  * @property int id
- * @property CoordinatesEntity coordinates
+ * @property Coordinates coordinates
  * @package App\Models
  */
 class Location extends Model
@@ -38,10 +38,10 @@ class Location extends Model
     ];
 
     /**
-     * @param CoordinatesEntity $coordinates
+     * @param Coordinates $coordinates
      * @return $this
      */
-    public function setCoordinatesAttribute(CoordinatesEntity $coordinates)
+    public function setCoordinatesAttribute(Coordinates $coordinates)
     {
         $expression = "ST_GeomFromText('POINT({$coordinates})')";
 
@@ -51,15 +51,15 @@ class Location extends Model
     }
 
     /**
-     * @return CoordinatesEntity
+     * @return Coordinates
      */
-    public function getCoordinatesAttribute(): CoordinatesEntity
+    public function getCoordinatesAttribute(): Coordinates
     {
         $text = Str::before(Str::after($this->attributes['coordinates'], 'POINT('), ')');
 
         [$latitude, $longitude] = explode(' ', $text);
 
-        return new CoordinatesEntity(new LatitudeEntity($latitude), new LongitudeEntity($longitude));
+        return new Coordinates(new Latitude($latitude), new Longitude($longitude));
     }
 
     /**

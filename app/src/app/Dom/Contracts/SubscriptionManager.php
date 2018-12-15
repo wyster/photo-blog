@@ -2,7 +2,7 @@
 
 namespace App\Dom\Contracts;
 
-use App\Dom\ValueObjects\SubscriptionEntity;
+use App\Dom\Entities\SubscriptionEntity;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**

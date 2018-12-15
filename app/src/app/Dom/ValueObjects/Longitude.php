@@ -5,11 +5,11 @@ namespace App\Dom\ValueObjects;
 use InvalidArgumentException;
 
 /**
- * Class LongitudeEntity.
+ * Class Longitude.
  *
  * @package App\Dom\ValueObjects
  */
-final class LongitudeEntity
+final class Longitude
 {
     /**
      * @var float
@@ -17,7 +17,7 @@ final class LongitudeEntity
     private $value;
 
     /**
-     * LongitudeEntity constructor.
+     * Longitude constructor.
      *
      * @param float $value
      */

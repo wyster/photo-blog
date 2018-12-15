@@ -3,7 +3,7 @@
 namespace App\Models\Builders;
 
 use App\Models\Tables\Constant;
-use App\Dom\ValueObjects\CoordinatesEntity;
+use App\Dom\ValueObjects\Coordinates;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -32,11 +32,11 @@ class LocationBuilder extends Builder
     }
 
     /**
-     * @param CoordinatesEntity $southWest
-     * @param CoordinatesEntity $northEast
+     * @param Coordinates $southWest
+     * @param Coordinates $northEast
      * @return $this
      */
-    public function whereInArea(CoordinatesEntity $southWest, CoordinatesEntity $northEast)
+    public function whereInArea(Coordinates $southWest, Coordinates $northEast)
     {
         $boundaries = sprintf(
             "ST_GeomFromText('POLYGON((%s %s, %s %s, %s %s, %s %s, %s %s))')",

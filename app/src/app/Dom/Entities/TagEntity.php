@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dom\ValueObjects;
+namespace App\Dom\Entities;
 
 use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
@@ -8,7 +8,7 @@ use InvalidArgumentException;
 /**
  * Class TagEntity.
  *
- * @package App\Dom\ValueObjects
+ * @package App\Dom\Entities
  */
 final class TagEntity implements Arrayable
 {

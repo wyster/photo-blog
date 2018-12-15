@@ -3,7 +3,7 @@
 namespace App\Managers\Subscription;
 
 use App\Dom\Contracts\SubscriptionManager;
-use App\Dom\ValueObjects\SubscriptionEntity;
+use App\Dom\Entities\SubscriptionEntity;
 use App\Models\Builders\SubscriptionBuilder;
 use App\Models\Subscription;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

@@ -3,29 +3,29 @@
 namespace App\Dom\ValueObjects;
 
 /**
- * Class CoordinatesEntity.
+ * Class Coordinates.
  *
  * @package App\Dom\ValueObjects
  */
-final class CoordinatesEntity
+final class Coordinates
 {
     /**
-     * @var LatitudeEntity
+     * @var Latitude
      */
     private $latitude;
 
     /**
-     * @var LongitudeEntity
+     * @var Longitude
      */
     private $longitude;
 
     /**
-     * CoordinatesEntity constructor.
+     * Coordinates constructor.
      *
-     * @param LatitudeEntity $latitude
-     * @param LongitudeEntity $longitude
+     * @param Latitude $latitude
+     * @param Longitude $longitude
      */
-    public function __construct(LatitudeEntity $latitude, LongitudeEntity $longitude)
+    public function __construct(Latitude $latitude, Longitude $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
@@ -40,17 +40,17 @@ final class CoordinatesEntity
     }
 
     /**
-     * @return LatitudeEntity
+     * @return Latitude
      */
-    public function getLatitude(): LatitudeEntity
+    public function getLatitude(): Latitude
     {
         return $this->latitude;
     }
 
     /**
-     * @return LongitudeEntity
+     * @return Longitude
      */
-    public function getLongitude(): LongitudeEntity
+    public function getLongitude(): Longitude
     {
         return $this->longitude;
     }

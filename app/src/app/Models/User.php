@@ -96,6 +96,14 @@ class User extends Authenticatable
      */
     public function toEntity(): UserEntity
     {
-        return UserEntity::fromArray(['role' => optional($this->role)->name] + $this->toArray());
+        return UserEntity::fromArray([
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'password_hash' => $this->password,
+            'role' => optional($this->role)->name,
+            'created_at' => $this->created_at->toAtomString(),
+            'updated_at' => $this->updated_at->toAtomString(),
+        ]);
     }
 }

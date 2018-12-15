@@ -33,6 +33,11 @@ final class UserEntity extends AbstractEntity
     /**
      * @var string
      */
+    private $passwordHash;
+
+    /**
+     * @var string
+     */
     private $role;
 
     /**
@@ -57,6 +62,7 @@ final class UserEntity extends AbstractEntity
         $this->id = $attributes['id'];
         $this->name = $attributes['name'];
         $this->email = $attributes['email'];
+        $this->passwordHash = $attributes['password_hash'];
         $this->role = $attributes['role'];
         $this->createdAt = new Carbon($attributes['created_at']);
         $this->updatedAt = new Carbon($attributes['updated_at']);
@@ -135,6 +141,14 @@ final class UserEntity extends AbstractEntity
     }
 
     /**
+     * @return string
+     */
+    public function getPasswordHash(): string
+    {
+        return $this->passwordHash;
+    }
+
+    /**
      * @inheritdoc
      */
     public function toArray(): array
@@ -166,6 +180,10 @@ final class UserEntity extends AbstractEntity
 
         if (!isset($attributes['email']) || !is_string($attributes['email'])) {
             throw new InvalidArgumentException('Invalid email value.');
+        }
+
+        if (!isset($attributes['password_hash']) || !is_string($attributes['password_hash'])) {
+            throw new InvalidArgumentException('Invalid password hash value.');
         }
 
         if (!isset($attributes['role']) || !is_string($attributes['role'])) {

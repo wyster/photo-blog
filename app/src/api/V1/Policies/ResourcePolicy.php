@@ -20,7 +20,7 @@ class ResourcePolicy
      */
     public function create(User $authUser, string $resourceClass)
     {
-        if ($authUser->isAdministrator()) {
+        if ($authUser->toEntity()->isAdministrator()) {
             return true;
         }
 
@@ -48,7 +48,7 @@ class ResourcePolicy
      */
     private function hasAccessToResource(User $authUser, $resource): bool
     {
-        if ($authUser->isAdministrator()) {
+        if ($authUser->toEntity()->isAdministrator()) {
             return true;
         }
 

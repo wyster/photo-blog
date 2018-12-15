@@ -45,9 +45,9 @@ final class SubscriptionEntity extends AbstractEntity
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getToken(): string
     {
-        return $this->email;
+        return $this->token;
     }
 
     /**
@@ -64,9 +64,9 @@ final class SubscriptionEntity extends AbstractEntity
     /**
      * @return string
      */
-    public function getToken(): string
+    public function getEmail(): string
     {
-        return $this->token;
+        return $this->email;
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Dom\Entities;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Arrayable;
 use InvalidArgumentException;
 
 /**
@@ -11,8 +10,11 @@ use InvalidArgumentException;
  *
  * @package App\Dom\Entities
  */
-final class UserEntity implements Arrayable
+final class UserEntity extends AbstractEntity
 {
+    public const ROLE_ADMINISTRATOR = 'Administrator';
+    public const ROLE_CUSTOMER = 'Customer';
+
     /**
      * @var int
      */
@@ -50,46 +52,70 @@ final class UserEntity implements Arrayable
      */
     public function __construct(array $attributes)
     {
-        $this->assertAttributes($attributes);
+        parent::__construct($attributes);
 
         $this->id = $attributes['id'];
         $this->name = $attributes['name'];
         $this->email = $attributes['email'];
         $this->role = $attributes['role'];
-        $this->createdAt = $attributes['created_at'];
-        $this->updatedAt = $attributes['updated_at'];
+        $this->createdAt = new Carbon($attributes['created_at']);
+        $this->updatedAt = new Carbon($attributes['updated_at']);
     }
 
     /**
-     * @param $attributes
-     * @return void
-     * @throws InvalidArgumentException
+     * @return int
      */
-    private function assertAttributes(array $attributes): void
+    public function getId(): int
     {
-        if (!isset($attributes['id']) || !is_int($attributes['id'])) {
-            throw new InvalidArgumentException('Invalid id value.');
-        }
+        return $this->id;
+    }
 
-        if (!isset($attributes['name']) || !is_string($attributes['name'])) {
-            throw new InvalidArgumentException('Invalid name value.');
-        }
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 
-        if (!isset($attributes['email']) || !is_string($attributes['email'])) {
-            throw new InvalidArgumentException('Invalid email value.');
-        }
+    /**
+     * @return Carbon
+     */
+    public function getCreatedAt(): Carbon
+    {
+        return $this->createdAt->copy();
+    }
 
-        if (!isset($attributes['role']) || !is_string($attributes['role'])) {
-            throw new InvalidArgumentException('Invalid role value.');
-        }
+    /**
+     * @return Carbon
+     */
+    public function getUpdatedAt(): Carbon
+    {
+        return $this->updatedAt->copy();
+    }
 
-        if (!isset($attributes['created_at']) || !($attributes['created_at'] instanceof Carbon)) {
-            throw new InvalidArgumentException('Invalid created at value.');
-        }
+    /**
+     * @return bool
+     */
+    public function isAdministrator(): bool
+    {
+        return $this->getRole() === static::ROLE_ADMINISTRATOR;
+    }
 
-        if (!isset($attributes['updated_at']) || !($attributes['updated_at'] instanceof Carbon)) {
-            throw new InvalidArgumentException('Invalid updated at value.');
-        }
+    /**
+     * @return string
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCustomer(): bool
+    {
+        return $this->getRole() === static::ROLE_CUSTOMER;
     }
 
     /**
@@ -97,13 +123,13 @@ final class UserEntity implements Arrayable
      */
     public function __toString(): string
     {
-        return (string) $this->getValue();
+        return $this->getEmail();
     }
 
     /**
      * @return string
      */
-    public function getValue(): string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -121,5 +147,37 @@ final class UserEntity implements Arrayable
             'created_at' => $this->createdAt,
             'updated_at' => $this->updatedAt,
         ];
+    }
+
+    /**
+     * @param $attributes
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    protected function assertAttributes(array $attributes): void
+    {
+        if (!isset($attributes['id']) || !is_int($attributes['id'])) {
+            throw new InvalidArgumentException('Invalid id value.');
+        }
+
+        if (!isset($attributes['name']) || !is_string($attributes['name'])) {
+            throw new InvalidArgumentException('Invalid name value.');
+        }
+
+        if (!isset($attributes['email']) || !is_string($attributes['email'])) {
+            throw new InvalidArgumentException('Invalid email value.');
+        }
+
+        if (!isset($attributes['role']) || !is_string($attributes['role'])) {
+            throw new InvalidArgumentException('Invalid role value.');
+        }
+
+        if (!isset($attributes['role']) || !is_string($attributes['created_at'])) {
+            throw new InvalidArgumentException('Invalid created at value.');
+        }
+
+        if (!isset($attributes['role']) || !is_string($attributes['updated_at'])) {
+            throw new InvalidArgumentException('Invalid updated at value.');
+        }
     }
 }

@@ -3,8 +3,8 @@
 use App\Models\Photo;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Dom\Entities\UserEntity;
 use App\Models\Builders\UserBuilder;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -91,18 +92,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @return bool
+     * @return UserEntity
      */
-    public function isAdministrator(): bool
+    public function toEntity(): UserEntity
     {
-        return optional($this->role)->name === Role::NAME_ADMINISTRATOR;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCustomer(): bool
-    {
-        return optional($this->role)->name === Role::NAME_CUSTOMER;
+        return UserEntity::fromArray(['role' => optional($this->role)->name] + $this->toArray());
     }
 }

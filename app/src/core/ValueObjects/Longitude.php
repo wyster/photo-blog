@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Dom\ValueObjects;
+namespace Core\ValueObjects;
 
 use InvalidArgumentException;
 
 /**
  * Class Longitude.
  *
- * @package App\Dom\ValueObjects
+ * @package Core\ValueObjects
  */
 final class Longitude
 {
-    /**
-     * @var float
-     */
     private $value;
 
     /**

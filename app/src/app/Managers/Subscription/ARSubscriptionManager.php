@@ -2,10 +2,10 @@
 
 namespace App\Managers\Subscription;
 
-use App\Dom\Contracts\SubscriptionManager;
-use App\Dom\Entities\SubscriptionEntity;
 use App\Models\Builders\SubscriptionBuilder;
 use App\Models\Subscription;
+use Core\Contracts\SubscriptionManager;
+use Core\Entities\SubscriptionEntity;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface as Database;
 use function App\Util\str_unique;
@@ -60,6 +60,7 @@ class ARSubscriptionManager implements SubscriptionManager
      */
     public function getByToken(string $token): SubscriptionEntity
     {
+        /** @var Subscription $subscription */
         $subscription = (new Subscription)
             ->newQuery()
             ->whereTokenEquals($token)
@@ -103,12 +104,16 @@ class ARSubscriptionManager implements SubscriptionManager
     /**
      * @inheritdoc
      */
-    public function deleteByToken(string $token): void
+    public function deleteByToken(string $token): SubscriptionEntity
     {
-        (new Subscription)
+        /** @var Subscription $subscription */
+        $subscription = (new Subscription)
             ->newQuery()
             ->whereTokenEquals($token)
-            ->firstOrFail()
-            ->delete();
+            ->firstOrFail();
+
+        $subscription->delete();
+
+        return $subscription->toEntity();
     }
 }

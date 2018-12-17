@@ -2,7 +2,7 @@
 
 namespace App\Services\SiteMap;
 
-use App\Managers\Photo\PhotoManager;
+use App\Managers\Photo\ARPhotoManager;
 use App\Managers\Tag\ARTagManager;
 use App\Models\Post;
 use App\Models\Tag;
@@ -27,7 +27,7 @@ class AppSiteMapBuilder implements SiteMapBuilder
     private $siteMapBuilder;
 
     /**
-     * @var PhotoManager
+     * @var ARPhotoManager
      */
     private $photoManager;
 
@@ -40,10 +40,10 @@ class AppSiteMapBuilder implements SiteMapBuilder
      * AppSiteMapBuilder constructor.
      *
      * @param Builder $siteMapBuilder
-     * @param PhotoManager $photoManager
+     * @param ARPhotoManager $photoManager
      * @param ARTagManager $tagManager
      */
-    public function __construct(Builder $siteMapBuilder, PhotoManager $photoManager, ARTagManager $tagManager)
+    public function __construct(Builder $siteMapBuilder, ARPhotoManager $photoManager, ARTagManager $tagManager)
     {
         $this->siteMapBuilder = $siteMapBuilder;
         $this->photoManager = $photoManager;

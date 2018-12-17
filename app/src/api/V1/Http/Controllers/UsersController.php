@@ -3,7 +3,7 @@
 namespace Api\V1\Http\Controllers;
 
 use Api\V1\Http\Resources\UserPlainResource;
-use App\Managers\User\UserManager;
+use Core\Contracts\UserManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -104,7 +104,7 @@ class UsersController extends Controller
      */
     public function get($id): JsonResponse
     {
-        $user = $this->userManager->getById((int) $id);
+        $user = $this->userManager->getById($id);
 
         return $this->responseFactory->json(new UserPlainResource($user), Response::HTTP_OK);
     }
@@ -144,9 +144,7 @@ class UsersController extends Controller
      */
     public function update($id, Request $request): JsonResponse
     {
-        $user = $this->userManager->getById((int) $id);
-
-        $this->userManager->update($user, $request->all());
+        $user = $this->userManager->updateById($id, $request->all());
 
         return $this->responseFactory->json(new UserPlainResource($user), Response::HTTP_OK);
     }
@@ -170,9 +168,7 @@ class UsersController extends Controller
      */
     public function delete($id): JsonResponse
     {
-        $user = $this->userManager->getById((int) $id);
-
-        $this->userManager->delete($user);
+        $this->userManager->deleteById($id);
 
         return $this->responseFactory->json(null, Response::HTTP_NO_CONTENT);
     }

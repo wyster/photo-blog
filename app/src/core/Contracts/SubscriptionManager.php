@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Dom\Contracts;
+namespace Core\Contracts;
 
-use App\Dom\Entities\SubscriptionEntity;
+use Core\Entities\SubscriptionEntity;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
  * Interface SubscriptionManager.
  *
- * @package App\Dom\Contracts
+ * @package Core\Contracts
  */
 interface SubscriptionManager
 {
@@ -42,7 +42,7 @@ interface SubscriptionManager
      * Delete the subscription by token.
      *
      * @param string $token
-     * @return void
+     * @return SubscriptionEntity
      */
-    public function deleteByToken(string $token): void;
+    public function deleteByToken(string $token): SubscriptionEntity;
 }

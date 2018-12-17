@@ -2,8 +2,8 @@
 
 namespace App\Models\Builders;
 
-use App\Dom\Entities\UserEntity;
 use App\Models\Tables\Constant;
+use Core\Entities\UserEntity;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

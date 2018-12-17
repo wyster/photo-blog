@@ -5,7 +5,7 @@ namespace Api\V1\Http\Controllers;
 use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\PostResource;
-use App\Managers\Post\PostManager;
+use Core\Contracts\PostManager;
 use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -203,9 +203,7 @@ class PostsController extends Controller
      */
     public function update($id, Request $request): JsonResponse
     {
-        $post = $this->postManager->getById((int) $id);
-
-        $this->postManager->update($post, $request->all());
+        $post = $this->postManager->updateById($id, $request->all());
 
         $this->cacheManager->tags(['posts', 'photos', 'tags'])->flush();
 
@@ -511,9 +509,7 @@ class PostsController extends Controller
      */
     public function delete($id): JsonResponse
     {
-        $post = $this->postManager->getById((int) $id);
-
-        $this->postManager->delete($post);
+        $this->postManager->deleteById($id);
 
         $this->cacheManager->tags(['posts', 'photos', 'tags'])->flush();
 

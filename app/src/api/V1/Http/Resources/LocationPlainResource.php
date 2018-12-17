@@ -2,7 +2,7 @@
 
 namespace Api\V1\Http\Resources;
 
-use App\Models\Location;
+use Core\Entities\LocationEntity;
 use Illuminate\Http\Resources\Json\Resource;
 use function App\Util\html_purify;
 use function App\Util\to_float;
@@ -15,7 +15,7 @@ use function App\Util\to_float;
 class LocationPlainResource extends Resource
 {
     /**
-     * @var Location
+     * @var LocationEntity
      */
     public $resource;
 
@@ -25,8 +25,8 @@ class LocationPlainResource extends Resource
     public function toArray($request)
     {
         return [
-            'latitude' => to_float(html_purify($this->resource->coordinates->getLatitude())),
-            'longitude' => to_float(html_purify($this->resource->coordinates->getLongitude())),
+            'latitude' => to_float(html_purify($this->resource->getCoordinates()->getLatitude())),
+            'longitude' => to_float(html_purify($this->resource->getCoordinates()->getLongitude())),
         ];
     }
 }

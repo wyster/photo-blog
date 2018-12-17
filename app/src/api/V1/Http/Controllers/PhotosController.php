@@ -3,7 +3,7 @@
 namespace Api\V1\Http\Controllers;
 
 use Api\V1\Http\Resources\PhotoResource;
-use App\Managers\Photo\PhotoManager;
+use Core\Contracts\PhotoManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -154,9 +154,7 @@ class PhotosController extends Controller
      */
     public function update($id, Request $request): JsonResponse
     {
-        $photo = $this->photoManager->getById((int) $id);
-
-        $this->photoManager->update($photo, $request->all());
+        $photo = $this->photoManager->updateById($id, $request->all());
 
         return $this->responseFactory->json(new PhotoResource($photo), JsonResponse::HTTP_OK);
     }
@@ -181,9 +179,7 @@ class PhotosController extends Controller
      */
     public function delete($id): JsonResponse
     {
-        $photo = $this->photoManager->getById((int) $id);
-
-        $this->photoManager->delete($photo);
+        $this->photoManager->deleteById($id);
 
         return $this->responseFactory->json(null, JsonResponse::HTTP_NO_CONTENT);
     }

@@ -2,7 +2,7 @@
 
 namespace Api\V1\Http\Resources;
 
-use App\Models\User;
+use Core\Entities\UserEntity;
 use Illuminate\Http\Resources\Json\Resource;
 use function App\Util\html_purify;
 use function App\Util\to_int;
@@ -16,7 +16,7 @@ use function App\Util\to_string;
 class UserPlainResource extends Resource
 {
     /**
-     * @var User
+     * @var UserEntity
      */
     public $resource;
 
@@ -28,14 +28,14 @@ class UserPlainResource extends Resource
         $visibleUserContacts = optional($request->user())->can('view-user-contacts', $this->resource);
 
         return [
-            'id' => to_int(html_purify($this->resource->id)),
-            'name' => to_string(html_purify($this->resource->name)),
+            'id' => to_int(html_purify($this->resource->getId())),
+            'name' => to_string(html_purify($this->resource->getName())),
             'email' => $this->when($visibleUserContacts, function () {
-                return to_string(html_purify($this->resource->email));
+                return to_string(html_purify($this->resource->getEmail()));
             }),
-            'role' => to_string(html_purify($this->resource->role->name)),
-            'created_at' => to_string(html_purify(optional($this->resource->created_at)->toAtomString())),
-            'updated_at' => to_string(html_purify(optional($this->resource->updated_at)->toAtomString())),
+            'role' => to_string(html_purify($this->resource->getRole())),
+            'created_at' => to_string(html_purify($this->resource->getCreatedAt()->toAtomString())),
+            'updated_at' => to_string(html_purify($this->resource->getUpdatedAt()->toAtomString())),
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Console\Commands;
 
-use App\Managers\User\UserManager;
+use App\Managers\User\ARUserManager;
 use Illuminate\Console\Command;
 
 /**
@@ -27,16 +27,16 @@ class ChangeUserPassword extends Command
     protected $description = 'Change user password';
 
     /**
-     * @var UserManager
+     * @var ARUserManager
      */
     private $userManager;
 
     /**
      * Create a new command instance.
      *
-     * @param UserManager $userManager
+     * @param ARUserManager $userManager
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(ARUserManager $userManager)
     {
         parent::__construct();
 

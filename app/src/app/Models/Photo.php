@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Builders\PhotoBuilder;
 use App\Models\Tables\Constant;
 use Carbon\Carbon;
+use Core\Entities\PhotoEntity;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,15 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string path
  * @property string avg_color
  * @property array metadata
- *
- * @property string|null manufacturer
- * @property string|null model
- * @property string|null exposure_time
- * @property string|null aperture
- * @property string|null iso
- * @property string|null taken_at
- * @property string|null software
- *
  * @property Carbon created_at
  * @property Carbon updated_at
  * @property User createdByUser
@@ -33,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property Collection thumbnails
  * @property Post post
  * @property Collection posts
- *
  * @package App\Models
  */
 class Photo extends Model
@@ -66,6 +57,13 @@ class Photo extends Model
     /**
      * @inheritdoc
      */
+    protected $with = [
+        'thumbnails',
+    ];
+
+    /**
+     * @inheritdoc
+     */
     protected static function boot()
     {
         parent::boot();
@@ -80,7 +78,9 @@ class Photo extends Model
      */
     public function thumbnails()
     {
-        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)->orderBy('width')->orderBy('height');
+        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)
+            ->orderBy('width')
+            ->orderBy('height');
     }
 
     /**
@@ -122,9 +122,9 @@ class Photo extends Model
     {
         $this->setRelation('post', collect($this->posts)->first());
 
-        $photo = $this->getRelation('post');
+        $post = $this->getRelation('post');
 
-        return $photo;
+        return $post;
     }
 
     /**
@@ -136,92 +136,24 @@ class Photo extends Model
     }
 
     /**
-     * @return string|null
+     * @return PhotoEntity
      */
-    public function getManufacturerAttribute(): ?string
+    public function toEntity(): PhotoEntity
     {
-        return $this->metadata['ifd0.Make'] ?? $this->metadata['exif.MakerNote'] ?? null;
-    }
+        $attributes = [
+            'id' => $this->id,
+            'created_by_user_id' => $this->created_by_user_id,
+            'path' => $this->path,
+            'avg_color' => $this->avg_color,
+            'metadata' => $this->metadata,
+            'created_at' => $this->created_at->toAtomString(),
+            'updated_at' => $this->updated_at->toAtomString(),
+        ];
 
-    /**
-     * @return string|null
-     */
-    public function getModelAttribute(): ?string
-    {
-        return $this->metadata['ifd0.Model'] ?? null;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getExposureTimeAttribute(): ?string
-    {
-        $raw = $this->metadata['exif.ExposureTime'] ?? null;
-
-        if (!is_string($raw)) {
-            return null;
+        if ($this->location) {
+            $attributes['location'] = $this->location->toArray();
         }
 
-        [$numerator, $denominator] = explode('/', $raw);
-
-        if (!is_numeric($numerator) || !is_numeric($denominator)) {
-            return null;
-        }
-
-        $value = $denominator / $numerator;
-
-        return '1/' . number_format($value, 0);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getApertureAttribute(): ?string
-    {
-        $raw = $this->metadata['exif.FNumber'] ?? null;
-
-        if (!is_string($raw)) {
-            return null;
-        }
-
-        [$numerator, $denominator] = explode('/', $raw);
-
-        if (!is_numeric($numerator) || !is_numeric($denominator)) {
-            return null;
-        }
-
-        $value = $numerator / $denominator;
-
-        return 'f/' . number_format($value, 1);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getIsoAttribute(): ?string
-    {
-        return $this->metadata['exif.ISOSpeedRatings'] ?? null;
-    }
-
-    /**
-     * @return Carbon|null
-     */
-    public function getTakenAtAttribute(): ?string
-    {
-        $raw = $this->metadata['exif.DateTimeOriginal'] ?? null;
-
-        if (!is_string($raw) && !is_numeric($raw)) {
-            return null;
-        }
-
-        return new Carbon($raw);
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSoftwareAttribute(): ?string
-    {
-        return $this->metadata['ifd0.Software'] ?? null;
+        return new PhotoEntity($attributes);
     }
 }

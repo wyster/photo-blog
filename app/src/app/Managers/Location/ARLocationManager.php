@@ -2,18 +2,20 @@
 
 namespace App\Managers\Location;
 
-use App\Dom\ValueObjects\Coordinates;
-use App\Dom\ValueObjects\Latitude;
-use App\Dom\ValueObjects\Longitude;
 use App\Models\Location;
+use Core\Contracts\LocationManager;
+use Core\Entities\LocationEntity;
+use Core\ValueObjects\Coordinates;
+use Core\ValueObjects\Latitude;
+use Core\ValueObjects\Longitude;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**
- * Class LocationManager.
+ * Class ARLocationManager.
  *
  * @package App\Managers\Location
  */
-class LocationManager
+class ARLocationManager implements LocationManager
 {
     /**
      * @var Database
@@ -26,7 +28,7 @@ class LocationManager
     private $validator;
 
     /**
-     * LocationManager constructor.
+     * ARLocationManager constructor.
      *
      * @param Database $database
      * @param LocationValidator $validator
@@ -38,12 +40,9 @@ class LocationManager
     }
 
     /**
-     * Create a location.
-     *
-     * @param array $attributes
-     * @return Location
+     * @inheritdoc
      */
-    public function create(array $attributes): Location
+    public function create(array $attributes): LocationEntity
     {
         $attributes = $this->validator->validateForCreate($attributes);
 
@@ -53,6 +52,6 @@ class LocationManager
 
         $location->save();
 
-        return $location;
+        return $location->toEntity();
     }
 }

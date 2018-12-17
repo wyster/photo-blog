@@ -4,16 +4,17 @@ namespace App\Managers\User;
 
 use App\Models\Role;
 use App\Models\User;
+use Core\Contracts\UserManager;
+use Core\Entities\UserEntity;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Database\ConnectionInterface as Database;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Class UserManager.
+ * Class ARUserManager.
  *
  * @package App\Managers\User
  */
-class UserManager
+class ARUserManager implements UserManager
 {
     /**
      * @var Database
@@ -31,7 +32,7 @@ class UserManager
     private $validator;
 
     /**
-     * UserManager constructor.
+     * ARUserManager constructor.
      *
      * @param Database $database
      * @param Hasher $hasher
@@ -45,12 +46,9 @@ class UserManager
     }
 
     /**
-     * Create a user.
-     *
-     * @param array $attributes
-     * @return User
+     * @inheritdoc
      */
-    public function create(array $attributes): User
+    public function create(array $attributes): UserEntity
     {
         // Create a customer user by default.
         if (!isset($attributes['role_id'])) {
@@ -67,18 +65,16 @@ class UserManager
             $user->save();
         });
 
-        return $user;
+        return $user->toEntity();
     }
 
     /**
-     * Update a user.
-     *
-     * @param User $user
-     * @param array $attributes
-     * @return void
+     * @inheritdoc
      */
-    public function update(User $user, array $attributes): void
+    public function updateById(int $id, array $attributes): UserEntity
     {
+        $user = (new User)->newQuery()->findOrFail($id);
+
         $attributes = $this->validator->validateForSave($user, $attributes);
 
         $user->fill($attributes);
@@ -90,83 +86,48 @@ class UserManager
         $this->database->transaction(function () use ($user) {
             $user->save();
         });
+
+        return $user->toEntity();
     }
 
     /**
-     * Get a user by ID.
-     *
-     * @param int $id
-     * @return User
+     * @inheritdoc
      */
-    public function getById(int $id): User
+    public function getById(int $id): UserEntity
     {
         $user = (new User)
             ->newQuery()
             ->findOrFail($id);
 
-        return $user;
+        return $user->toEntity();
     }
 
     /**
-     * Get a user by name.
-     *
-     * @param string $name
-     * @return User
+     * @inheritdoc
      */
-    public function getByName(string $name): User
+    public function getByName(string $name): UserEntity
     {
         $user = (new User)
             ->newQuery()
             ->whereNameEquals($name)
             ->firstOrFail();
 
-        return $user;
+        return $user->toEntity();
     }
 
     /**
-     * Get a user by credentials.
-     *
-     * @param string $email
-     * @param string $password
-     * @return User
+     * @inheritdoc
      */
-    public function getByCredentials(string $email, string $password): User
-    {
-        $user = $this->getByEmail($email);
-
-        if (!$this->hasher->check($password, $user->password)) {
-            throw new ModelNotFoundException(__('auth.password', ['email' => $email]));
-        }
-
-        return $user;
-    }
-
-    /**
-     * Get a user by email.
-     *
-     * @param string $email
-     * @return User
-     */
-    public function getByEmail(string $email): User
+    public function deleteById(int $id): UserEntity
     {
         $user = (new User)
             ->newQuery()
-            ->whereEmailEquals($email)
-            ->firstOrFail();
+            ->findOrFail($id);
 
-        return $user;
-    }
-
-    /**
-     * Delete a user.
-     *
-     * @param User $user
-     * @return void
-     */
-    public function delete(User $user): void
-    {
         $this->database->transaction(function () use ($user) {
             $user->delete();
         });
+
+        return $user->toEntity();
     }
 }

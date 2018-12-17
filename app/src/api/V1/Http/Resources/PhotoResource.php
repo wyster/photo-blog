@@ -19,19 +19,19 @@ class PhotoResource extends PhotoPlainResource
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [
-            'location' => to_object($this->resource->location, LocationPlainResource::class),
+            'location' => to_object($this->resource->getLocation(), LocationPlainResource::class),
             'exif' => [
-                'manufacturer' => to_string(html_purify($this->resource->manufacturer)),
-                'model' => to_string(html_purify($this->resource->model)),
-                'exposure_time' => to_string(html_purify($this->resource->exposure_time)),
-                'aperture' => to_string(html_purify($this->resource->aperture)),
-                'iso' => to_string(html_purify($this->resource->iso)),
-                'taken_at' => to_string(html_purify($this->resource->taken_at)),
-                'software' => to_string(html_purify($this->resource->software)),
+                'manufacturer' => to_string(html_purify($this->resource->getMetadata()->getManufacturer())),
+                'model' => to_string(html_purify($this->resource->getMetadata()->getModel())),
+                'exposure_time' => to_string(html_purify($this->resource->getMetadata()->getExposureTime())),
+                'aperture' => to_string(html_purify($this->resource->getMetadata()->getAperture())),
+                'iso' => to_string(html_purify($this->resource->getMetadata()->getIso())),
+                'taken_at' => to_string(html_purify(optional($this->resource->getMetadata()->getTakenAt())->toAtomString())),
+                'software' => to_string(html_purify($this->resource->getMetadata()->getSoftware())),
             ],
             'thumbnails' => [
-                'medium' => to_object($this->resource->thumbnails->offsetGet(0), ThumbnailPlainResource::class),
-                'large' => to_object($this->resource->thumbnails->offsetGet(1), ThumbnailPlainResource::class),
+                'medium' => to_object($this->resource->getThumbnails()->offsetGet(0), ThumbnailPlainResource::class),
+                'large' => to_object($this->resource->getThumbnails()->offsetGet(1), ThumbnailPlainResource::class),
             ],
         ]);
     }

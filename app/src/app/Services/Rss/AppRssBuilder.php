@@ -2,7 +2,7 @@
 
 namespace App\Services\Rss;
 
-use App\Managers\Photo\PhotoManager;
+use App\Managers\Photo\ARPhotoManager;
 use App\Models\Post;
 use App\Services\Rss\Contracts\RssBuilder;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
@@ -32,7 +32,7 @@ class AppRssBuilder implements RssBuilder
     private $rssBuilder;
 
     /**
-     * @var PhotoManager
+     * @var ARPhotoManager
      */
     private $photoManager;
 
@@ -41,9 +41,9 @@ class AppRssBuilder implements RssBuilder
      *
      * @param Storage $storage
      * @param Builder $rssBuilder
-     * @param PhotoManager $photoManager
+     * @param ARPhotoManager $photoManager
      */
-    public function __construct(Storage $storage, Builder $rssBuilder, PhotoManager $photoManager)
+    public function __construct(Storage $storage, Builder $rssBuilder, ARPhotoManager $photoManager)
     {
         $this->storage = $storage;
         $this->rssBuilder = $rssBuilder;

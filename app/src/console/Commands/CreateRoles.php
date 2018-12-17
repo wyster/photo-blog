@@ -2,8 +2,8 @@
 
 namespace Console\Commands;
 
-use App\Dom\Entities\UserEntity;
 use App\Models\Role;
+use Core\Entities\UserEntity;
 use Illuminate\Console\Command;
 
 /**

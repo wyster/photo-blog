@@ -2,19 +2,21 @@
 
 namespace App\Managers\Photo;
 
-use App\Managers\Location\LocationManager;
 use App\Models\Photo;
 use App\Services\Image\Contracts\ImageProcessor;
+use Core\Contracts\LocationManager;
+use Core\Contracts\PhotoManager;
+use Core\Entities\PhotoEntity;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Illuminate\Database\ConnectionInterface as Database;
 use function App\Util\str_unique;
 
 /**
- * Class PhotoManager.
+ * Class ARPhotoManager.
  *
  * @package App\Managers\Photo
  */
-class PhotoManager
+class ARPhotoManager implements PhotoManager
 {
     /**
      * @var Database
@@ -42,7 +44,7 @@ class PhotoManager
     private $validator;
 
     /**
-     * PhotoManager constructor.
+     * ARPhotoManager constructor.
      *
      * @param Database $database
      * @param Storage $storage
@@ -66,12 +68,9 @@ class PhotoManager
     }
 
     /**
-     * Create a photo.
-     *
-     * @param array $attributes
-     * @return Photo
+     * @inheritdoc
      */
-    public function create(array $attributes = []): Photo
+    public function create(array $attributes): PhotoEntity
     {
         $attributes = $this->validator->validateForCreate($attributes);
 
@@ -88,7 +87,7 @@ class PhotoManager
         $this->database->transaction(function () use ($photo, $attributes, $thumbnails) {
             if (isset($attributes['location'])) {
                 $location = $this->locationManager->create($attributes['location']);
-                $attributes['location_id'] = $location->id;
+                $attributes['location_id'] = $location->getId();
             }
             $photo->save();
             $photo->thumbnails()->detach();
@@ -99,55 +98,61 @@ class PhotoManager
 
         $photo->load('location', 'thumbnails');
 
-        return $photo;
+        return $photo->toEntity();
     }
 
     /**
-     * Update a photo.
-     *
-     * @param Photo $photo
-     * @param array $attributes
+     * @inheritdoc
      */
-    public function update(Photo $photo, array $attributes): void
+    public function updateById($id, array $attributes): PhotoEntity
     {
         $attributes = $this->validator->validateForUpdate($attributes);
 
+        /** @var Photo $photo */
+        $photo = (new Photo)
+            ->newQuery()
+            ->findOrFail($id);
+
         $this->database->transaction(function () use ($photo, $attributes) {
             $location = $this->locationManager->create($attributes['location']);
-            $attributes['location_id'] = $location->id;
+            $attributes['location_id'] = $location->getId();
             $photo->fill($attributes);
             $photo->save();
         });
 
         $photo->load('location', 'thumbnails');
+
+        return $photo->toEntity();
     }
 
     /**
-     * Get a photo by ID.
-     *
-     * @param int $id
-     * @return Photo
+     * @inheritdoc
      */
-    public function getById(int $id): Photo
+    public function getById(int $id): PhotoEntity
     {
+        /** @var Photo $photo */
         $photo = (new Photo)
             ->newQuery()
             ->findOrFail($id);
 
-        return $photo;
+        return $photo->toEntity();
     }
 
     /**
-     * Delete a photo.
-     *
-     * @param Photo $photo
-     * @return void
+     * @inheritdoc
      */
-    public function delete(Photo $photo): void
+    public function deleteById(int $id): PhotoEntity
     {
+        /** @var Photo $photo */
+        $photo = (new Photo)
+            ->newQuery()
+            ->findOrFail($id);
+
         $this->database->transaction(function () use ($photo) {
             $photo->delete();
-            $this->storage->deleteDirectory(pathinfo($photo->path, PATHINFO_DIRNAME));
+            $this->storage->deleteDirectory($photo->toEntity()->getDirPath());
         });
+
+        return $photo->toEntity();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Models\Builders;
 
-use App\Dom\ValueObjects\Coordinates;
 use App\Models\Tables\Constant;
+use Core\ValueObjects\Coordinates;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

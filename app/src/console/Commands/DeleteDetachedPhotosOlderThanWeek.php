@@ -2,7 +2,7 @@
 
 namespace Console\Commands;
 
-use App\Managers\Photo\PhotoManager;
+use App\Managers\Photo\ARPhotoManager;
 use App\Models\Photo;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -33,10 +33,10 @@ class DeleteDetachedPhotosOlderThanWeek extends Command
     /**
      * Execute the console command.
      *
-     * @param PhotoManager $photoManager
+     * @param ARPhotoManager $photoManager
      * @return void
      */
-    public function handle(PhotoManager $photoManager): void
+    public function handle(ARPhotoManager $photoManager): void
     {
         (new Photo)
             ->newQuery()
@@ -45,7 +45,7 @@ class DeleteDetachedPhotosOlderThanWeek extends Command
             ->chunk($this->option('chunk_size'), function (Collection $photos) use ($photoManager) {
                 $photos->each(function (Photo $photo) use ($photoManager) {
                     $this->comment("Deleting photo {$photo->id}.");
-                    $photoManager->delete($photo);
+                    $photoManager->deleteById($photo->id);
                 });
             });
     }

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Dom\Entities\SubscriptionEntity;
 use App\Models\Builders\SubscriptionBuilder;
+use Core\Entities\SubscriptionEntity;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,6 +20,7 @@ class Subscription extends Model
      * @inheritdoc
      */
     public $timestamps = false;
+
     /**
      * @inheritdoc
      */
@@ -48,6 +49,10 @@ class Subscription extends Model
      */
     public function toEntity(): SubscriptionEntity
     {
-        return SubscriptionEntity::fromArray($this->toArray());
+        return new SubscriptionEntity([
+            'id' => $this->id,
+            'email' => $this->email,
+            'token' => $this->token,
+        ]);
     }
 }

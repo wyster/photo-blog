@@ -78,13 +78,33 @@ class AppServiceProvider extends ServiceProvider
     protected function registerAppServices(): void
     {
         $this->app->bind(
-            \App\Dom\Contracts\SubscriptionManager::class,
+            \Core\Contracts\LocationManager::class,
+            \App\Managers\Location\ARLocationManager::class
+        );
+
+        $this->app->bind(
+            \Core\Contracts\PostManager::class,
+            \App\Managers\Post\ARPostManager::class
+        );
+
+        $this->app->bind(
+            \Core\Contracts\PhotoManager::class,
+            \App\Managers\Photo\ARPhotoManager::class
+        );
+
+        $this->app->bind(
+            \Core\Contracts\SubscriptionManager::class,
             \App\Managers\Subscription\ARSubscriptionManager::class
         );
 
         $this->app->bind(
-            \App\Dom\Contracts\TagManager::class,
+            \Core\Contracts\TagManager::class,
             \App\Managers\Tag\ARTagManager::class
+        );
+
+        $this->app->bind(
+            \Core\Contracts\UserManager::class,
+            \App\Managers\User\ARUserManager::class
         );
 
         $this->app->bind(

@@ -6,15 +6,18 @@ use App\Models\Builders\PostBuilder;
 use App\Models\Photo;
 use App\Models\Post;
 use App\Models\Tag;
+use Core\Contracts\PostManager;
+use Core\Entities\PostEntity;
 use Illuminate\Contracts\Auth\Guard as Auth;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface as Database;
 
 /**
- * Class PostManager.
+ * Class ARPostManager.
  *
  * @package App\Managers\Post
  */
-class PostManager
+class ARPostManager implements PostManager
 {
     /**
      * @var Database
@@ -32,7 +35,7 @@ class PostManager
     private $validator;
 
     /**
-     * PostManager constructor.
+     * ARPostManager constructor.
      *
      * @param Database $database
      * @param Auth $auth
@@ -43,37 +46,6 @@ class PostManager
         $this->database = $database;
         $this->auth = $auth;
         $this->validator = $validator;
-    }
-
-    /**
-     * Create a post.
-     *
-     * @param array $attributes
-     * @return Post
-     */
-    public function create(array $attributes): Post
-    {
-        $defaultAttributes = ['created_by_user_id' => $this->auth->id()];
-
-        $attributes = array_merge($attributes, $defaultAttributes);
-
-        $attributes = $this->validator->validateForCreate($attributes);
-
-        $post = (new Post)->fill($attributes);
-
-        $this->database->transaction(function () use ($post, $attributes) {
-            $post->save();
-            if (isset($attributes['tags'])) {
-                $this->syncTags($post, $attributes['tags']);
-            }
-            if (isset($attributes['photo'])) {
-                $this->syncPhotos($post, [$attributes['photo']]);
-            }
-        });
-
-        $post->load('tags', 'photos');
-
-        return $post;
     }
 
     /**
@@ -115,13 +87,45 @@ class PostManager
     }
 
     /**
-     * Update a post.
-     *
-     * @param Post $post
-     * @param array $attributes
+     * @inheritdoc
      */
-    public function update(Post $post, array $attributes = []): void
+    public function create(array $attributes): PostEntity
     {
+        $defaultAttributes = ['created_by_user_id' => $this->auth->id()];
+
+        $attributes = array_merge($attributes, $defaultAttributes);
+
+        $attributes = $this->validator->validateForCreate($attributes);
+
+        $post = (new Post)->fill($attributes);
+
+        $this->database->transaction(function () use ($post, $attributes) {
+            $post->save();
+            if (isset($attributes['tags'])) {
+                $this->syncTags($post, $attributes['tags']);
+            }
+            if (isset($attributes['photo'])) {
+                $this->syncPhotos($post, [$attributes['photo']]);
+            }
+        });
+
+        $post->load('tags', 'photos');
+
+        return $post->toEntity();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateById(int $id, array $attributes): PostEntity
+    {
+        /** @var Post $post */
+        $post = (new Post)
+            ->newQuery()
+            ->withPhoto()
+            ->withTags()
+            ->findOrFail($id);
+
         $attributes = $this->validator->validateForUpdate($post, $attributes);
 
         $post->fill($attributes);
@@ -137,19 +141,18 @@ class PostManager
         });
 
         $post->load('tags', 'photos');
+
+        return $post->toEntity();
     }
 
     /**
-     * Get a post by ID.
-     *
-     * @param int $id
-     * @param array $filters
-     * @return Post
+     * @inheritdoc
      */
-    public function getById(int $id, array $filters = []): Post
+    public function getById(int $id, array $filters = []): PostEntity
     {
         $filters = $this->validator->validateForFiltering($filters);
 
+        /** @var Post $post */
         $post = (new Post)
             ->newQuery()
             ->withPhoto()
@@ -165,20 +168,17 @@ class PostManager
             })
             ->findOrFail($id);
 
-        return $post;
+        return $post->toEntity();
     }
 
     /**
-     * Get a post before ID.
-     *
-     * @param int $id
-     * @param array $filters
-     * @return Post
+     * @inheritdoc
      */
-    public function getBeforeId(int $id, array $filters = []): Post
+    public function getBeforeId(int $id, array $filters = []): PostEntity
     {
         $filters = $this->validator->validateForFiltering($filters);
 
+        /** @var Post $post */
         $post = (new Post)
             ->newQuery()
             ->withPhoto()
@@ -196,20 +196,17 @@ class PostManager
             })
             ->firstOrFail();
 
-        return $post;
+        return $post->toEntity();
     }
 
     /**
-     * Get a post after ID.
-     *
-     * @param int $id
-     * @param array $filters
-     * @return Post
+     * @inheritdoc
      */
-    public function getAfterId(int $id, array $filters = []): Post
+    public function getAfterId(int $id, array $filters = []): PostEntity
     {
         $filters = $this->validator->validateForFiltering($filters);
 
+        /** @var Post $post */
         $post = (new Post)
             ->newQuery()
             ->withPhoto()
@@ -227,18 +224,13 @@ class PostManager
             })
             ->firstOrFail();
 
-        return $post;
+        return $post->toEntity();
     }
 
     /**
-     * Paginate over posts.
-     *
-     * @param int $page
-     * @param int $perPage
-     * @param array $filters
-     * @return mixed
+     * @inheritdoc
      */
-    public function paginate(int $page, int $perPage, array $filters = [])
+    public function paginate(int $page, int $perPage, array $filters = []): LengthAwarePaginator
     {
         $filters = $this->validator->validateForFiltering($filters);
 
@@ -259,19 +251,29 @@ class PostManager
 
         $paginator = $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
 
+        $paginator->getCollection()->transform(function (Post $subscription) {
+            return $subscription->toEntity();
+        });
+
         return $paginator;
     }
 
     /**
-     * Delete a post.
-     *
-     * @param Post $post
-     * @return void
+     * @inheritdoc
      */
-    public function delete(Post $post): void
+    public function deleteById(int $id): PostEntity
     {
+        /** @var Post $post */
+        $post = (new Post)
+            ->newQuery()
+            ->withPhoto()
+            ->withTags()
+            ->findOrFail($id);
+
         $this->database->transaction(function () use ($post) {
             $post->delete();
         });
+
+        return $post->toEntity();
     }
 }

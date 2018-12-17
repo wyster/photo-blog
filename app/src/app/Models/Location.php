@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Dom\ValueObjects\Coordinates;
-use App\Dom\ValueObjects\Latitude;
-use App\Dom\ValueObjects\Longitude;
 use App\Models\Builders\LocationBuilder;
 use App\Models\Tables\Constant;
+use Core\Entities\LocationEntity;
+use Core\ValueObjects\Coordinates;
+use Core\ValueObjects\Latitude;
+use Core\ValueObjects\Longitude;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -26,10 +27,12 @@ class Location extends Model
      * @inheritdoc
      */
     public $timestamps = false;
+
     /**
      * @inheritdoc
      */
     protected $table = Constant::TABLE_LOCATIONS;
+
     /**
      * @inheritdoc
      */
@@ -84,5 +87,16 @@ class Location extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class, 'location_id');
+    }
+
+    /**
+     * @return LocationEntity
+     */
+    public function toEntity(): LocationEntity
+    {
+        return new LocationEntity([
+            'id' => $this->id,
+            'coordinates' => $this->coordinates,
+        ]);
     }
 }

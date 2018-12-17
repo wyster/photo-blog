@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Builders\PostBuilder;
 use App\Models\Tables\Constant;
 use Carbon\Carbon;
+use Core\Entities\PostEntity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -17,7 +18,6 @@ use Illuminate\Support\Collection;
  * @property Carbon published_at
  * @property Carbon created_at
  * @property Carbon updated_at
- * @property bool is_published
  * @property User createdByUser
  * @property Collection photos
  * @property Photo photo
@@ -117,29 +117,24 @@ class Post extends Model
     }
 
     /**
-     * @param bool $isPublished
-     * @return $this
+     * @return PostEntity
      */
-    public function setIsPublishedAttribute(bool $isPublished)
+    public function toEntity(): PostEntity
     {
-        if ($this->is_published !== $isPublished) {
-            $this->attributes['published_at'] = $isPublished ? Carbon::now() : null;
+        $attributes = [
+            'id' => $this->id,
+            'created_by_user_id' => $this->created_by_user_id,
+            'description' => $this->description,
+            'photo' => $this->photo->toArray(),
+            'tags' => $this->tags->toArray(),
+            'created_at' => $this->created_at->toAtomString(),
+            'updated_at' => $this->updated_at->toAtomString(),
+        ];
+
+        if ($this->published_at) {
+            $attributes['published_at'] = $this->published_at->toAtomString();
         }
 
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getIsPublishedAttribute(): bool
-    {
-        $isPublished = false;
-
-        if (isset($this->attributes['published_at'])) {
-            $isPublished = (bool) $this->attributes['published_at'];
-        }
-
-        return $isPublished;
+        return new PostEntity($attributes);
     }
 }

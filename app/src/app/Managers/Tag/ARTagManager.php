@@ -2,8 +2,8 @@
 
 namespace App\Managers\Tag;
 
-use App\Dom\Contracts\TagManager;
 use App\Models\Tag;
+use Core\Contracts\TagManager;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\ConnectionInterface as Database;
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Dom\Contracts;
+namespace Core\Contracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 /**
  * Interface TagManager.
  *
- * @package App\Dom\Contracts
+ * @package Core\Contracts
  */
 interface TagManager
 {

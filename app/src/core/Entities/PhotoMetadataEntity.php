@@ -1,20 +1,16 @@
 <?php
 
-namespace App\Dom\Entities;
+namespace Core\Entities;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * Class PhotoMetadataEntity.
  *
- * @package App\Dom\Entities
+ * @package Core\Entities
  */
-final class PhotoMetadataEntity implements Arrayable
+final class PhotoMetadataEntity extends AbstractEntity
 {
-    /**
-     * @var array
-     */
     private $attributes;
 
     /**
@@ -25,38 +21,6 @@ final class PhotoMetadataEntity implements Arrayable
     public function __construct(array $attributes)
     {
         $this->attributes = $attributes;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function __toString(): string
-    {
-        return (string) $this->getValue();
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue(): string
-    {
-        return collect($this->toArray())->crossJoin(' / ');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function toArray(): array
-    {
-        return [
-            'manufacturer' => $this->getManufacturer(),
-            'model' => $this->getModel(),
-            'exposure_time' => $this->getExposureTime(),
-            'aperture' => $this->getAperture(),
-            'iso' => $this->getIso(),
-            'taken_at' => $this->getTakenAt(),
-            'software' => $this->getSoftware(),
-        ];
     }
 
     /**
@@ -147,5 +111,51 @@ final class PhotoMetadataEntity implements Arrayable
     public function getSoftware(): ?string
     {
         return $this->metadata['ifd0.Software'] ?? null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __toString(): string
+    {
+        $items = collect();
+
+        if ($this->getManufacturer()) {
+            $items->push("Manufacturer: {$this->getManufacturer()}");
+        }
+
+        if ($this->getModel()) {
+            $items->push("Model: {$this->getModel()}");
+        }
+
+        if ($this->getExposureTime()) {
+            $items->push("Exposure time: {$this->getExposureTime()}");
+        }
+
+        if ($this->getAperture()) {
+            $items->push("Aperture: {$this->getAperture()}");
+        }
+
+        if ($this->getIso()) {
+            $items->push("ISO: {$this->getIso()}");
+        }
+
+        if ($this->getTakenAt()) {
+            $items->push("Taken at: {$this->getTakenAt()->toAtomString()}");
+        }
+
+        if ($this->getSoftware()) {
+            $items->push("Software: {$this->getSoftware()}");
+        }
+
+        return $items->implode(', ');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray(): array
+    {
+        return $this->attributes;
     }
 }

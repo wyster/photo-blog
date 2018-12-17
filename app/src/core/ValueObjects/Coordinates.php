@@ -1,22 +1,15 @@
 <?php
 
-namespace App\Dom\ValueObjects;
+namespace Core\ValueObjects;
 
 /**
  * Class Coordinates.
  *
- * @package App\Dom\ValueObjects
+ * @package Core\ValueObjects
  */
 final class Coordinates
 {
-    /**
-     * @var Latitude
-     */
     private $latitude;
-
-    /**
-     * @var Longitude
-     */
     private $longitude;
 
     /**

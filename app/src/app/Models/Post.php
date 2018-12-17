@@ -15,9 +15,10 @@ use Illuminate\Support\Collection;
  * @property int id
  * @property int created_by_user_id
  * @property string description
- * @property Carbon published_at
  * @property Carbon created_at
  * @property Carbon updated_at
+ * @property Carbon published_at
+ * @property bool is_published
  * @property User createdByUser
  * @property Collection photos
  * @property Photo photo
@@ -114,6 +115,33 @@ class Post extends Model
         $photo = $this->getRelation('photo');
 
         return $photo;
+    }
+
+    /**
+     * @param bool $isPublished
+     * @return $this
+     */
+    public function setIsPublishedAttribute(bool $isPublished)
+    {
+        if ($this->is_published !== $isPublished) {
+            $this->attributes['published_at'] = $isPublished ? Carbon::now() : null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsPublishedAttribute(): bool
+    {
+        $isPublished = false;
+
+        if (isset($this->attributes['published_at'])) {
+            $isPublished = (bool) $this->attributes['published_at'];
+        }
+
+        return $isPublished;
     }
 
     /**

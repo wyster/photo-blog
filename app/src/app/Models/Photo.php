@@ -148,6 +148,7 @@ class Photo extends Model
             'metadata' => $this->metadata,
             'created_at' => $this->created_at->toAtomString(),
             'updated_at' => $this->updated_at->toAtomString(),
+            'thumbnails' => $this->thumbnails->toArray(),
         ];
 
         if ($this->location) {

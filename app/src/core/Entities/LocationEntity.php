@@ -22,7 +22,7 @@ final class LocationEntity extends AbstractEntity
     public function __construct(array $attributes)
     {
         $this->setId($attributes['id'] ?? null);
-        $this->setCoordinates($attributes['coordinates'] ?? null);;
+        $this->setCoordinates($attributes['coordinates'] ?? null);
     }
 
     /**

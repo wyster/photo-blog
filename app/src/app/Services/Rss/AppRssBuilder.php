@@ -5,6 +5,8 @@ namespace App\Services\Rss;
 use App\Managers\Photo\ARPhotoManager;
 use App\Models\Post;
 use App\Services\Rss\Contracts\RssBuilder;
+use Core\Entities\PostEntity;
+use Core\Entities\TagEntity;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Lib\Rss\Category;
 use Lib\Rss\Channel;
@@ -89,23 +91,25 @@ class AppRssBuilder implements RssBuilder
             ->take(100)
             ->get()
             ->map(function (Post $post) {
+                return $post->toEntity();
+            })
+            ->map(function (PostEntity $post) {
                 return (new Item)
-                    ->setTitle($post->description)
-                    /*->setDescription($post->photo->exif->toString())*/
-                    ->setLink(url_frontend_photo($post->id))
-                    ->setGuid(url_frontend_photo($post->id))
-                    ->setPubDate($post->photo->created_at->toAtomString())
+                    ->setTitle($post->getDescription())
+                    ->setDescription((string) $post->getPhoto()->getMetadata())
+                    ->setLink(url_frontend_photo($post->getId()))
+                    ->setGuid(url_frontend_photo($post->getId()))
+                    ->setPubDate($post->getPhoto()->getCreatedAt()->toAtomString())
                     ->setEnclosure(
                         (new Enclosure)
-                            ->setUrl(url_storage($this->storage->url($post->photo->thumbnails->first()->path)))
+                            ->setUrl(url_storage($this->storage->url($post->getPhoto()->getThumbnails()->first()->getPath())))
                             ->setType('image/jpeg')
-                            ->setLength($this->storage->size($post->photo->thumbnails->first()->path))
+                            ->setLength($this->storage->size($post->getPhoto()->getThumbnails()->first()->getPath()))
                     )
                     ->setCategories(
-                        $post->tags
-                            ->pluck('value')
-                            ->map(function (string $value) {
-                                return (new Category)->setValue($value);
+                        $post->getTags()
+                            ->map(function (TagEntity $tag) {
+                                return (new Category)->setValue($tag->getValue());
                             })
                             ->toArray()
                     );

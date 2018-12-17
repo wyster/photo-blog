@@ -94,7 +94,7 @@ final class PhotoMetadataEntity extends AbstractEntity
     /**
      * @return Carbon|null
      */
-    public function getTakenAt(): ?string
+    public function getTakenAt(): ?Carbon
     {
         $raw = $this->attributes['exif.DateTimeOriginal'] ?? null;
 

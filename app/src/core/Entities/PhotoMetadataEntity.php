@@ -28,7 +28,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getManufacturer(): ?string
     {
-        return $this->metadata['ifd0.Make'] ?? $this->metadata['exif.MakerNote'] ?? null;
+        return $this->attributes['ifd0.Make'] ?? $this->attributes['exif.MakerNote'] ?? null;
     }
 
     /**
@@ -36,7 +36,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getModel(): ?string
     {
-        return $this->metadata['ifd0.Model'] ?? null;
+        return $this->attributes['ifd0.Model'] ?? null;
     }
 
     /**
@@ -44,7 +44,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getExposureTime(): ?string
     {
-        $raw = $this->metadata['exif.ExposureTime'] ?? null;
+        $raw = $this->attributes['exif.ExposureTime'] ?? null;
 
         if (!is_string($raw)) {
             return null;
@@ -66,7 +66,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getAperture(): ?string
     {
-        $raw = $this->metadata['exif.FNumber'] ?? null;
+        $raw = $this->attributes['exif.FNumber'] ?? null;
 
         if (!is_string($raw)) {
             return null;
@@ -88,7 +88,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getIso(): ?string
     {
-        return $this->metadata['exif.ISOSpeedRatings'] ?? null;
+        return $this->attributes['exif.ISOSpeedRatings'] ?? null;
     }
 
     /**
@@ -96,7 +96,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getTakenAt(): ?string
     {
-        $raw = $this->metadata['exif.DateTimeOriginal'] ?? null;
+        $raw = $this->attributes['exif.DateTimeOriginal'] ?? null;
 
         if (!is_string($raw) && !is_numeric($raw)) {
             return null;
@@ -110,7 +110,7 @@ final class PhotoMetadataEntity extends AbstractEntity
      */
     public function getSoftware(): ?string
     {
-        return $this->metadata['ifd0.Software'] ?? null;
+        return $this->attributes['ifd0.Software'] ?? null;
     }
 
     /**

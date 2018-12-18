@@ -81,7 +81,6 @@ class ImagineImageProcessor implements ImageProcessor
         $this->close();
 
         $this->path = $path;
-
         $this->image = $this->imagine->open($this->storage->path($path));
 
         return $this;
@@ -92,8 +91,8 @@ class ImagineImageProcessor implements ImageProcessor
      */
     public function close(): ImageProcessor
     {
-        $this->image = null;
         $this->path = null;
+        $this->image = null;
 
         return $this;
     }

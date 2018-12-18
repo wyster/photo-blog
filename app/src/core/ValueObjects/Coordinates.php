@@ -57,8 +57,8 @@ final class Coordinates implements Arrayable, JsonSerializable
     public function toArray(): array
     {
         return [
-            'latitude' => (float) $this->getLatitude(),
-            'longitude' => (float) $this->getLongitude(),
+            'latitude' => $this->getLatitude()->getValue(),
+            'longitude' => $this->getLongitude()->getValue(),
         ];
     }
 

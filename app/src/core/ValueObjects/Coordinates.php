@@ -2,12 +2,15 @@
 
 namespace Core\ValueObjects;
 
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
+
 /**
  * Class Coordinates.
  *
  * @package Core\ValueObjects
  */
-final class Coordinates
+final class Coordinates implements Arrayable, JsonSerializable
 {
     private $latitude;
     private $longitude;
@@ -25,14 +28,6 @@ final class Coordinates
     }
 
     /**
-     * @inheritdoc
-     */
-    public function __toString(): string
-    {
-        return sprintf('%s %s', $this->getLatitude(), $this->getLongitude());
-    }
-
-    /**
      * @return Latitude
      */
     public function getLatitude(): Latitude
@@ -46,5 +41,32 @@ final class Coordinates
     public function getLongitude(): Longitude
     {
         return $this->longitude;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __toString(): string
+    {
+        return sprintf('%s %s', $this->getLatitude(), $this->getLongitude());
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'latitude' => (float) $this->getLatitude(),
+            'longitude' => (float) $this->getLongitude(),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

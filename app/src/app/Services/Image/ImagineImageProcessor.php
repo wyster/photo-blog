@@ -6,20 +6,25 @@ use App\Services\Image\Contracts\ImageProcessor;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
+use Imagine\Image\AbstractImagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Metadata\ExifMetadataReader;
 use Imagine\Image\Point;
-use Imagine\Imagick\Imagine;
 use InvalidArgumentException;
 
 /**
- * Class ImagickImageProcessor.
+ * Class ImagineImageProcessor.
  *
  * @package App\Services\Image
  */
-class ImagickImageProcessor implements ImageProcessor
+class ImagineImageProcessor implements ImageProcessor
 {
+    /**
+     * @var AbstractImagine
+     */
+    private $imagine;
+
     /**
      * @var Storage
      */
@@ -41,13 +46,14 @@ class ImagickImageProcessor implements ImageProcessor
     private $path = null;
 
     /**
-     * ImagickImageProcessor constructor.
+     * ImagineImageProcessor constructor.
      *
+     * @param AbstractImagine $imagine
      * @param Storage $storage
      * @param ValidatorFactory $validatorFactory
      * @param array $config
      */
-    public function __construct(Storage $storage, ValidatorFactory $validatorFactory, array $config)
+    public function __construct(AbstractImagine $imagine, Storage $storage, ValidatorFactory $validatorFactory, array $config)
     {
         $validator = $validatorFactory->make($config, [
             'thumbnails' => ['required', 'array'],
@@ -62,6 +68,7 @@ class ImagickImageProcessor implements ImageProcessor
             throw new InvalidArgumentException('Invalid configuration has been provided.');
         }
 
+        $this->imagine = $imagine->setMetadataReader(new ExifMetadataReader);
         $this->storage = $storage;
         $this->config = $config;
     }
@@ -75,9 +82,7 @@ class ImagickImageProcessor implements ImageProcessor
 
         $this->path = $path;
 
-        $this->image = (new Imagine)
-            ->setMetadataReader(new ExifMetadataReader)
-            ->open($this->storage->path($path));
+        $this->image = $this->imagine->open($this->storage->path($path));
 
         return $this;
     }

@@ -1,20 +1,22 @@
 <?php
 
-namespace Core\Entities;
+namespace Core\ValueObjects;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
 
 /**
- * Class PhotoMetadataEntity.
+ * Class ImageMetadata.
  *
  * @package Core\Entities
  */
-final class PhotoMetadataEntity extends AbstractEntity
+final class ImageMetadata implements Arrayable, JsonSerializable
 {
     private $attributes;
 
     /**
-     * PhotoMetadataEntity constructor.
+     * ImageMetadata constructor.
      *
      * @param array $attributes
      */
@@ -157,5 +159,13 @@ final class PhotoMetadataEntity extends AbstractEntity
     public function toArray(): array
     {
         return $this->attributes;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

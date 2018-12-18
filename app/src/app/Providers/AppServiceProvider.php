@@ -40,6 +40,11 @@ class AppServiceProvider extends ServiceProvider
             \GuzzleHttp\Client::class
         );
 
+        $this->app->bind(
+            \Imagine\Image\AbstractImagine::class,
+            \Imagine\Imagick\Imagine::class
+        );
+
         $this->app->singleton('HTMLPurifier', function (Application $app) {
             $filesystem = $app->make('filesystem')->disk('local');
             $cacheDirectory = 'cache/HTMLPurifier_DefinitionCache';
@@ -109,10 +114,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(
             \App\Services\Image\Contracts\ImageProcessor::class,
-            \App\Services\Image\ImagickImageProcessor::class
+            \App\Services\Image\ImagineImageProcessor::class
         );
 
-        $this->app->when(\App\Services\Image\ImagickImageProcessor::class)
+        $this->app->when(\App\Services\Image\ImagineImageProcessor::class)
             ->needs('$config')
             ->give(function (Application $app) {
                 return [

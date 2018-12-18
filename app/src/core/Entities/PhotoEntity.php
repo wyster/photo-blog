@@ -3,6 +3,7 @@
 namespace Core\Entities;
 
 use Carbon\Carbon;
+use Core\ValueObjects\ImageMetadata;
 use Illuminate\Support\Collection;
 
 /**
@@ -33,7 +34,7 @@ final class PhotoEntity extends AbstractEntity
         $this->setCreatedByUserId($attributes['created_by_user_id'] ?? null);
         $this->setPath($attributes['path'] ?? null);
         $this->setAvgColor($attributes['avg_color'] ?? null);
-        $this->setMetadata(new PhotoMetadataEntity($attributes['metadata'] ?? []));
+        $this->setMetadata(new ImageMetadata($attributes['metadata'] ?? []));
         $this->setCreatedAt(isset($attributes['created_at']) ? new Carbon($attributes['created_at']) : null);
         $this->setUpdatedAt(isset($attributes['updated_at']) ? new Carbon($attributes['updated_at']) : null);
         $this->setThumbnails(collect($attributes['thumbnails'] ?? [])->map(function (array $attributes) {
@@ -129,10 +130,10 @@ final class PhotoEntity extends AbstractEntity
     }
 
     /**
-     * @param PhotoMetadataEntity $metadata
+     * @param ImageMetadata $metadata
      * @return PhotoEntity
      */
-    private function setMetadata(PhotoMetadataEntity $metadata): PhotoEntity
+    private function setMetadata(ImageMetadata $metadata): PhotoEntity
     {
         $this->metadata = $metadata;
 
@@ -140,9 +141,9 @@ final class PhotoEntity extends AbstractEntity
     }
 
     /**
-     * @return PhotoMetadataEntity
+     * @return ImageMetadata
      */
-    public function getMetadata(): PhotoMetadataEntity
+    public function getMetadata(): ImageMetadata
     {
         return $this->metadata;
     }

@@ -9,7 +9,7 @@ use JsonSerializable;
 /**
  * Class ImageMetadata.
  *
- * @package Core\Entities
+ * @package Core\ValueObjects
  */
 final class ImageMetadata implements Arrayable, JsonSerializable
 {

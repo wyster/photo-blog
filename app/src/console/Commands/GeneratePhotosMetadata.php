@@ -6,6 +6,7 @@ use App\Models\Photo;
 use App\Services\Image\Contracts\ImageProcessor;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use Throwable;
 
 /**
  * Class GeneratePhotosMetadata.
@@ -41,9 +42,13 @@ class GeneratePhotosMetadata extends Command
             ->newQuery()
             ->chunk($this->option('chunk_size'), function (Collection $photos) use ($imageProcessor) {
                 $photos->each(function (Photo $photo) use ($imageProcessor) {
-                    $this->comment("Processing photo {$photo->id}...");
-                    $photo->metadata = $imageProcessor->open($photo->path)->getMetadata();
-                    $photo->save();
+                    try {
+                        $this->comment("Processing photo {$photo->id}...");
+                        $photo->metadata = $imageProcessor->open($photo->path)->getMetadata();
+                        $photo->save();
+                    } catch (Throwable $e) {
+                        $this->error($e->getMessage());
+                    }
                 });
             });
     }

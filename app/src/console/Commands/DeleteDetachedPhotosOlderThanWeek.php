@@ -44,7 +44,7 @@ class DeleteDetachedPhotosOlderThanWeek extends Command
             ->whereHasNoPosts()
             ->chunk($this->option('chunk_size'), function (Collection $photos) use ($photoManager) {
                 $photos->each(function (Photo $photo) use ($photoManager) {
-                    $this->comment("Deleting photo {$photo->id}.");
+                    $this->comment("Deleting photo {$photo->id}...");
                     $photoManager->deleteById($photo->id);
                 });
             });

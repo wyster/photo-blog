@@ -56,7 +56,7 @@ class ChangeUserPassword extends Command
 
         $password = $this->secret('Enter a new user\'s password:');
 
-        $this->userManager->update($user, ['password' => $password]);
+        $this->userManager->updateById($user->getId(), ['password' => $password]);
 
         $this->info('Password has been successfully changed.');
     }

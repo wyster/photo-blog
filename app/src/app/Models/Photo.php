@@ -136,7 +136,7 @@ class Photo extends Model
     }
 
     /**
-     * @return Photo
+     * @return $this
      */
     public function loadEntityRelations(): Photo
     {

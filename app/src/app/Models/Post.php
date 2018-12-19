@@ -155,7 +155,7 @@ class Post extends Model
     }
 
     /**
-     * @return Post
+     * @return $this
      */
     public function loadEntityRelations(): Post
     {

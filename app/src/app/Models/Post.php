@@ -53,6 +53,16 @@ class Post extends Model
     ];
 
     /**
+     * @var array
+     */
+    public static $entityRelations = [
+        'tags',
+        'photos',
+        'photos.location',
+        'photos.thumbnails',
+    ];
+
+    /**
      * @inheritdoc
      */
     protected static function boot()
@@ -149,7 +159,7 @@ class Post extends Model
      */
     public function loadEntityRelations(): Post
     {
-        return $this->load('tags', 'photos', 'photos.location', 'photos.thumbnails');
+        return $this->load(static::$entityRelations);
     }
 
     /**

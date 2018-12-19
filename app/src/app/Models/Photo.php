@@ -54,6 +54,14 @@ class Photo extends Model
     ];
 
     /**
+     * @var array
+     */
+    public static $entityRelations = [
+        'location',
+        'thumbnails',
+    ];
+
+    /**
      * @inheritdoc
      */
     protected static function boot()
@@ -132,7 +140,7 @@ class Photo extends Model
      */
     public function loadEntityRelations(): Photo
     {
-        return $this->load('location', 'thumbnails');
+        return $this->load(static::$entityRelations);
     }
 
     /**

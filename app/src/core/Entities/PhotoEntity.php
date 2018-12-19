@@ -245,11 +245,9 @@ final class PhotoEntity extends AbstractEntity
             'metadata' => $this->getMetadata()->toArray(),
             'created_at' => $this->getCreatedAt()->toAtomString(),
             'updated_at' => $this->getUpdatedAt()->toAtomString(),
+            'location' => $this->getLocation() ? $this->getLocation()->toArray() : null,
+            'thumbnails' => $this->getThumbnails()->toArray(),
         ];
-
-        if ($this->getLocation()) {
-            $attributes['location'] = $this->getLocation()->toArray();
-        }
 
         return $attributes;
     }

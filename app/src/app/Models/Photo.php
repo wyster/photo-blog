@@ -148,7 +148,7 @@ class Photo extends Model
      */
     public function toEntity(): PhotoEntity
     {
-        $attributes = [
+        return new PhotoEntity([
             'id' => $this->id,
             'created_by_user_id' => $this->created_by_user_id,
             'path' => $this->path,
@@ -156,13 +156,8 @@ class Photo extends Model
             'metadata' => $this->metadata,
             'created_at' => $this->created_at->toAtomString(),
             'updated_at' => $this->updated_at->toAtomString(),
+            'location' => $this->location ? $this->location->toArray() : null,
             'thumbnails' => $this->thumbnails->toArray(),
-        ];
-
-        if ($this->location) {
-            $attributes['location'] = $this->location->toArray();
-        }
-
-        return new PhotoEntity($attributes);
+        ]);
     }
 }

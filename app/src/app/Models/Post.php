@@ -167,7 +167,7 @@ class Post extends Model
      */
     public function toEntity(): PostEntity
     {
-        $attributes = [
+        return new PostEntity([
             'id' => $this->id,
             'created_by_user_id' => $this->created_by_user_id,
             'description' => $this->description,
@@ -175,12 +175,7 @@ class Post extends Model
             'tags' => $this->tags->toArray(),
             'created_at' => $this->created_at->toAtomString(),
             'updated_at' => $this->updated_at->toAtomString(),
-        ];
-
-        if ($this->published_at) {
-            $attributes['published_at'] = $this->published_at->toAtomString();
-        }
-
-        return new PostEntity($attributes);
+            'published_at' => $this->published_at ? $this->published_at->toAtomString() : null,
+        ]);
     }
 }

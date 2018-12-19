@@ -237,7 +237,7 @@ final class PhotoEntity extends AbstractEntity
      */
     public function toArray(): array
     {
-        $attributes = [
+        return [
             'id' => $this->getId(),
             'created_by_user_id' => $this->getCreatedByUserId(),
             'path' => $this->getPath(),
@@ -248,7 +248,5 @@ final class PhotoEntity extends AbstractEntity
             'location' => $this->getLocation() ? $this->getLocation()->toArray() : null,
             'thumbnails' => $this->getThumbnails()->toArray(),
         ];
-
-        return $attributes;
     }
 }

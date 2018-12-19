@@ -213,11 +213,8 @@ final class PostEntity extends AbstractEntity
             'tags' => $this->getTags()->toArray(),
             'created_at' => $this->getCreatedAt()->toAtomString(),
             'updated_at' => $this->getUpdatedAt()->toAtomString(),
+            'published_at' => $this->getPublishedAt() ? $this->getPublishedAt()->toAtomString() : null,
         ];
-
-        if ($this->getPublishedAt()) {
-            $attributes['published_at'] = $this->getPublishedAt()->toAtomString();
-        }
 
         return $attributes;
     }

@@ -49,17 +49,17 @@ return [
         'thumbnails' => [
             [
                 'mode' => \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET,
-                'quality' => 70,     // percentage
+                'quality' => 70, // percents
                 'prefix' => 'large',
-                'width' => 2000,     // pixels
-                'height' => 2000,    // pixels
+                'width' => 2000, // pixels
+                'height' => 2000, // pixels
             ],
             [
                 'mode' => \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET,
-                'quality' => 70,    // percentage
+                'quality' => 70, // percents
                 'prefix' => 'medium',
-                'width' => 600,     // pixels
-                'height' => 600,    // pixels
+                'width' => 600, // pixels
+                'height' => 600, // pixels
             ],
         ],
     ],

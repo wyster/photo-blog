@@ -7,7 +7,7 @@ use App\Rules\LongitudeRule;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\ValidationException;
-use function App\Util\validator_filter_schema;
+use function App\Util\validator_filter_attributes;
 
 /**
  * Class LocationValidator.
@@ -52,6 +52,6 @@ class LocationValidator
 
         $this->validatorFactory->validate($attributes, $rules);
 
-        return validator_filter_schema($attributes, $rules);
+        return validator_filter_attributes($attributes, $rules);
     }
 }

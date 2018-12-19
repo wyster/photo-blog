@@ -127,6 +127,7 @@ class ARPhotoManager implements PhotoManager
         /** @var Photo $photo */
         $photo = (new Photo)
             ->newQuery()
+            ->withEntityRelations()
             ->findOrFail($id);
 
         return $photo->toEntity();
@@ -140,6 +141,7 @@ class ARPhotoManager implements PhotoManager
         /** @var Photo $photo */
         $photo = (new Photo)
             ->newQuery()
+            ->withEntityRelations()
             ->findOrFail($id);
 
         $this->database->transaction(function () use ($photo) {

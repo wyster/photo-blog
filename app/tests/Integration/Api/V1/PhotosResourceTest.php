@@ -54,7 +54,7 @@ class PhotosResourceTest extends TestCase
         /** @var Photo $photo */
         $photo = (new Photo)
             ->newQuery()
-            ->withThumbnails()
+            ->withEntityRelations()
             ->whereIdEquals($responseBody['id'])
             ->firstOrFail();
 

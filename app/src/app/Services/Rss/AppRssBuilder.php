@@ -84,8 +84,7 @@ class AppRssBuilder implements RssBuilder
     {
         return (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->whereIsPublished()
             ->orderByCreatedAtDesc()
             ->take(100)

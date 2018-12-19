@@ -6,7 +6,7 @@ use App\Models\Tables\Constant;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use function App\Util\validator_filter_schema;
+use function App\Util\validator_filter_attributes;
 
 /**
  * Class SubscriptionValidator.
@@ -49,7 +49,7 @@ class SubscriptionValidator
 
         $this->validatorFactory->validate($attributes, $rules, $messages);
 
-        return validator_filter_schema($attributes, $rules);
+        return validator_filter_attributes($attributes, $rules);
     }
 
     /**

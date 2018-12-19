@@ -2,6 +2,7 @@
 
 namespace App\Models\Builders;
 
+use App\Models\Photo;
 use App\Models\Tables\Constant;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,9 +30,9 @@ class PhotoBuilder extends Builder
     /**
      * @return $this
      */
-    public function withThumbnails()
+    public function withEntityRelations()
     {
-        return $this->with('thumbnails');
+        return $this->with(Photo::$entityRelations);
     }
 
     /**

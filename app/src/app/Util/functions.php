@@ -36,9 +36,9 @@ function str_unique(int $length = 40, string $alphabet = 'ABCDEFGHIJKLMNOPQRSTUV
  * Remove all malicious code from HTML string.
  *
  * @param mixed $html
- * @return string
+ * @return string|null
  */
-function html_purify($html)
+function html_purify($html): ?string
 {
     $value = value($html);
 
@@ -50,24 +50,24 @@ function html_purify($html)
 }
 
 /**
- * Remove keys from an array that are not exists in a structure array.
+ * Remove keys that missing in the schema array.
  *
  * @example array_filter_structure(['key_0' => 'value', 'key_1' => 'value'], ['key_0']); // ['key_0' => 'value']
  *
  * @param array $array
- * @param array $structure
+ * @param array $schema
  * @return array
  */
-function array_filter_structure(array $array, array $structure): array
+function array_filter_schema(array $array, array $schema): array
 {
     $result = [];
 
     foreach ($array as $key => $value) {
-        if (array_key_exists($key, $structure)) {
-            $result[$key] = is_array($value) && is_array($structure[$key]) ? array_filter_structure($value, $structure[$key]) : $value;
-        } elseif (is_int($key) && array_key_exists('*', $structure)) {
-            $result[$key] = is_array($value) && is_array($structure['*']) ? array_filter_structure($value, $structure['*']) : $value;
-        } elseif (in_array($key, $structure, true)) {
+        if (array_key_exists($key, $schema)) {
+            $result[$key] = is_array($value) && is_array($schema[$key]) ? array_filter_schema($value, $schema[$key]) : $value;
+        } elseif (is_int($key) && array_key_exists('*', $schema)) {
+            $result[$key] = is_array($value) && is_array($schema['*']) ? array_filter_schema($value, $schema['*']) : $value;
+        } elseif (in_array($key, $schema, true)) {
             $result[$key] = $value;
         }
     }
@@ -98,12 +98,12 @@ function array_remove_dot_notation(array $array): array
  * Remove attributes that have no validation rules.
  *
  * @param array $attributes
- * @param array $schema
+ * @param array $rules
  * @return array
  */
-function validator_filter_schema(array $attributes, array $schema): array
+function validator_filter_attributes(array $attributes, array $rules): array
 {
-    return array_filter_structure($attributes, array_remove_dot_notation(array_flip(array_keys($schema))));
+    return array_filter_schema($attributes, array_remove_dot_notation(array_flip(array_keys($rules))));
 }
 
 /**

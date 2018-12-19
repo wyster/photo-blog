@@ -74,16 +74,6 @@ class Photo extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function thumbnails()
-    {
-        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)
-            ->orderBy('width')
-            ->orderBy('height');
-    }
-
-    /**
      * @inheritdoc
      */
     public function newEloquentBuilder($query): PhotoBuilder
@@ -113,6 +103,16 @@ class Photo extends Model
     public function location()
     {
         return $this->belongsTo(Location::class, 'location_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function thumbnails()
+    {
+        return $this->belongsToMany(Thumbnail::class, Constant::TABLE_PHOTOS_THUMBNAILS)
+            ->orderBy('width')
+            ->orderBy('height');
     }
 
     /**

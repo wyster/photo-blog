@@ -120,8 +120,7 @@ class ARPostManager implements PostManager
         /** @var Post $post */
         $post = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->findOrFail($id);
 
         $attributes = $this->validator->validateForUpdate($post, $attributes);
@@ -151,8 +150,7 @@ class ARPostManager implements PostManager
         /** @var Post $post */
         $post = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->when(isset($filters['tag']), function (PostBuilder $query) use ($filters) {
                 return $query->whereTagValueEquals($filters['tag']);
             })
@@ -177,8 +175,7 @@ class ARPostManager implements PostManager
         /** @var Post $post */
         $post = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->whereIdLessThan($id)
             ->orderByIdDesc()
             ->when(isset($filters['tag']), function (PostBuilder $query) use ($filters) {
@@ -205,8 +202,7 @@ class ARPostManager implements PostManager
         /** @var Post $post */
         $post = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->whereIdGreaterThan($id)
             ->orderByIdAsc()
             ->when(isset($filters['tag']), function (PostBuilder $query) use ($filters) {
@@ -232,8 +228,7 @@ class ARPostManager implements PostManager
 
         $query = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->orderByCreatedAtDesc()
             ->when(isset($filters['tag']), function (PostBuilder $query) use ($filters) {
                 return $query->whereTagValueEquals($filters['tag']);
@@ -262,8 +257,7 @@ class ARPostManager implements PostManager
         /** @var Post $post */
         $post = (new Post)
             ->newQuery()
-            ->withPhoto()
-            ->withTags()
+            ->withEntityRelations()
             ->findOrFail($id);
 
         $this->database->transaction(function () use ($post) {

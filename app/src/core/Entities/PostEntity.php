@@ -42,7 +42,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param int $id
-     * @return PostEntity
+     * @return $this
      */
     private function setId(int $id): PostEntity
     {
@@ -61,7 +61,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param int $createdByUserId
-     * @return PostEntity
+     * @return $this
      */
     private function setCreatedByUserId(int $createdByUserId): PostEntity
     {
@@ -80,7 +80,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param string $path
-     * @return PostEntity
+     * @return $this
      */
     private function setDescription(string $path): PostEntity
     {
@@ -99,7 +99,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param PhotoEntity $photo
-     * @return PostEntity
+     * @return $this
      */
     private function setPhoto(PhotoEntity $photo): PostEntity
     {
@@ -118,7 +118,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param Collection $tags
-     * @return PostEntity
+     * @return $this
      */
     public function setTags(Collection $tags): PostEntity
     {
@@ -137,7 +137,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param Carbon $createdAt
-     * @return PostEntity
+     * @return $this
      */
     private function setCreatedAt(Carbon $createdAt): PostEntity
     {
@@ -156,7 +156,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param Carbon $updatedAt
-     * @return PostEntity
+     * @return $this
      */
     private function setUpdatedAt(Carbon $updatedAt): PostEntity
     {
@@ -175,7 +175,7 @@ final class PostEntity extends AbstractEntity
 
     /**
      * @param Carbon|null $publishedAt
-     * @return PostEntity
+     * @return $this
      */
     private function setPublishedAt(?Carbon $publishedAt): PostEntity
     {

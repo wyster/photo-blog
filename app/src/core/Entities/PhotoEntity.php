@@ -47,7 +47,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param int $id
-     * @return PhotoEntity
+     * @return $this
      */
     private function setId(int $id): PhotoEntity
     {
@@ -66,7 +66,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param int $createdByUserId
-     * @return PhotoEntity
+     * @return $this
      */
     private function setCreatedByUserId(int $createdByUserId): PhotoEntity
     {
@@ -85,7 +85,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param string $path
-     * @return PhotoEntity
+     * @return $this
      */
     private function setPath(string $path): PhotoEntity
     {
@@ -112,7 +112,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param string $avgColor
-     * @return PhotoEntity
+     * @return $this
      */
     private function setAvgColor(string $avgColor): PhotoEntity
     {
@@ -131,7 +131,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param ImageMetadata $metadata
-     * @return PhotoEntity
+     * @return $this
      */
     private function setMetadata(ImageMetadata $metadata): PhotoEntity
     {
@@ -150,7 +150,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param Carbon $createdAt
-     * @return PhotoEntity
+     * @return $this
      */
     private function setCreatedAt(Carbon $createdAt): PhotoEntity
     {
@@ -169,7 +169,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param Carbon $updatedAt
-     * @return PhotoEntity
+     * @return $this
      */
     private function setUpdatedAt(Carbon $updatedAt): PhotoEntity
     {
@@ -188,7 +188,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param Collection $thumbnails
-     * @return PhotoEntity
+     * @return $this
      */
     public function setThumbnails(Collection $thumbnails): PhotoEntity
     {
@@ -207,7 +207,7 @@ final class PhotoEntity extends AbstractEntity
 
     /**
      * @param LocationEntity|null $location
-     * @return PhotoEntity
+     * @return $this
      */
     private function setLocation(?LocationEntity $location): PhotoEntity
     {

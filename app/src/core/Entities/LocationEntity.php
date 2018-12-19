@@ -32,7 +32,7 @@ final class LocationEntity extends AbstractEntity
 
     /**
      * @param int $id
-     * @return LocationEntity
+     * @return $this
      */
     private function setId(int $id): LocationEntity
     {
@@ -51,7 +51,7 @@ final class LocationEntity extends AbstractEntity
 
     /**
      * @param Coordinates $coordinates
-     * @return LocationEntity
+     * @return $this
      */
     private function setCoordinates(Coordinates $coordinates): LocationEntity
     {
@@ -83,7 +83,7 @@ final class LocationEntity extends AbstractEntity
     {
         return [
             'id' => $this->getId(),
-            'coordinates' => $this->getCoordinates(),
+            'coordinates' => $this->getCoordinates()->toArray(),
         ];
     }
 }

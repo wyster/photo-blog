@@ -27,7 +27,7 @@ final class ThumbnailEntity extends AbstractEntity
 
     /**
      * @param string $path
-     * @return ThumbnailEntity
+     * @return $this
      */
     private function setPath(string $path): ThumbnailEntity
     {
@@ -46,7 +46,7 @@ final class ThumbnailEntity extends AbstractEntity
 
     /**
      * @param int $width
-     * @return ThumbnailEntity
+     * @return $this
      */
     private function setWidth(int $width): ThumbnailEntity
     {
@@ -65,7 +65,7 @@ final class ThumbnailEntity extends AbstractEntity
 
     /**
      * @param int $height
-     * @return ThumbnailEntity
+     * @return $this
      */
     private function setHeight(int $height): ThumbnailEntity
     {

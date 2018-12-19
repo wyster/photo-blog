@@ -25,7 +25,7 @@ final class TagEntity extends AbstractEntity
 
     /**
      * @param int $id
-     * @return TagEntity
+     * @return $this
      */
     private function setId(int $id): TagEntity
     {
@@ -44,7 +44,7 @@ final class TagEntity extends AbstractEntity
 
     /**
      * @param string $value
-     * @return TagEntity
+     * @return $this
      */
     private function setValue(string $value): TagEntity
     {

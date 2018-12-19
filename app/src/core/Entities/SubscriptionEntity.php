@@ -27,7 +27,7 @@ final class SubscriptionEntity extends AbstractEntity
 
     /**
      * @param int $id
-     * @return SubscriptionEntity
+     * @return $this
      */
     private function setId(int $id): SubscriptionEntity
     {
@@ -46,7 +46,7 @@ final class SubscriptionEntity extends AbstractEntity
 
     /**
      * @param string $email
-     * @return SubscriptionEntity
+     * @return $this
      */
     private function setEmail(string $email): SubscriptionEntity
     {
@@ -65,7 +65,7 @@ final class SubscriptionEntity extends AbstractEntity
 
     /**
      * @param string $token
-     * @return SubscriptionEntity
+     * @return $this
      */
     private function setToken(string $token): SubscriptionEntity
     {

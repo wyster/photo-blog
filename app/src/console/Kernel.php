@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         \Console\Commands\CreateRoles::class,
         \Console\Commands\DeleteDetachedPhotosOlderThanWeek::class,
         \Console\Commands\DeleteUnusedObjectsFromPhotoStorage::class,
+        \Console\Commands\GeneratePhotosMetadata::class,
         \Console\Commands\GenerateRestApiDocumentation::class,
         \Console\Commands\SendWeeklySubscriptionMails::class,
         \Console\Commands\TestScheduler::class,

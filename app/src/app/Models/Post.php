@@ -145,6 +145,14 @@ class Post extends Model
     }
 
     /**
+     * @return Post
+     */
+    public function loadEntityRelations(): Post
+    {
+        return $this->load('tags', 'photos', 'photos.location', 'photos.thumbnails');
+    }
+
+    /**
      * @return PostEntity
      */
     public function toEntity(): PostEntity

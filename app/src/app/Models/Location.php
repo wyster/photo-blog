@@ -58,9 +58,9 @@ class Location extends Model
      */
     public function getCoordinatesAttribute(): Coordinates
     {
-        $text = Str::before(Str::after($this->attributes['coordinates'], 'POINT('), ')');
+        $raw = Str::before(Str::after($this->attributes['coordinates'], 'POINT('), ')');
 
-        [$latitude, $longitude] = explode(' ', $text);
+        [$latitude, $longitude] = explode(' ', $raw);
 
         return new Coordinates(new Latitude($latitude), new Longitude($longitude));
     }
@@ -96,7 +96,7 @@ class Location extends Model
     {
         return new LocationEntity([
             'id' => $this->id,
-            'coordinates' => $this->coordinates,
+            'coordinates' => $this->coordinates->toArray(),
         ]);
     }
 }

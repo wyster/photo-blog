@@ -7,7 +7,7 @@ use App\Models\Tables\Constant;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use function App\Util\validator_filter_attributes;
+use function App\Util\validator_filter_schema;
 
 /**
  * Class PostValidator.
@@ -53,7 +53,7 @@ class PostValidator
 
         $this->validatorFactory->validate($attributes, $rules);
 
-        return validator_filter_attributes($attributes, $rules);
+        return validator_filter_schema($attributes, $rules);
     }
 
     /**
@@ -77,7 +77,7 @@ class PostValidator
 
         $this->validatorFactory->validate($attributes, $rules);
 
-        return validator_filter_attributes($attributes, $rules);
+        return validator_filter_schema($attributes, $rules);
     }
 
     /**
@@ -94,6 +94,6 @@ class PostValidator
 
         $this->validatorFactory->validate($filters, $rules);
 
-        return validator_filter_attributes($filters, $rules);
+        return validator_filter_schema($filters, $rules);
     }
 }

@@ -98,12 +98,12 @@ function array_remove_dot_notation(array $array): array
  * Remove attributes that have no validation rules.
  *
  * @param array $attributes
- * @param array $rules
+ * @param array $schema
  * @return array
  */
-function validator_filter_attributes(array $attributes, array $rules): array
+function validator_filter_schema(array $attributes, array $schema): array
 {
-    return array_filter_structure($attributes, array_remove_dot_notation(array_flip(array_keys($rules))));
+    return array_filter_structure($attributes, array_remove_dot_notation(array_flip(array_keys($schema))));
 }
 
 /**

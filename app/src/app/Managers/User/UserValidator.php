@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use function App\Util\validator_filter_attributes;
+use function App\Util\validator_filter_schema;
 
 /**
  * Class UserValidator.
@@ -50,7 +50,7 @@ class UserValidator
 
         $this->validatorFactory->validate($attributes, $rules);
 
-        return validator_filter_attributes($attributes, $rules);
+        return validator_filter_schema($attributes, $rules);
     }
 
     /**
@@ -71,6 +71,6 @@ class UserValidator
 
         $this->validatorFactory->validate($attributes, $rules);
 
-        return validator_filter_attributes($attributes, $rules);
+        return validator_filter_schema($attributes, $rules);
     }
 }

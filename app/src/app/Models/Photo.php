@@ -50,15 +50,7 @@ class Photo extends Model
      */
     protected $fillable = [
         'created_by_user_id',
-        'location_id',
         'path',
-    ];
-
-    /**
-     * @inheritdoc
-     */
-    protected $with = [
-        'thumbnails',
     ];
 
     /**
@@ -133,6 +125,14 @@ class Photo extends Model
     public function posts()
     {
         return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_PHOTOS);
+    }
+
+    /**
+     * @return Photo
+     */
+    public function loadEntityRelations(): Photo
+    {
+        return $this->load('location', 'thumbnails');
     }
 
     /**

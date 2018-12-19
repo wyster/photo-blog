@@ -109,9 +109,7 @@ class ARPostManager implements PostManager
             }
         });
 
-        $post->load('tags', 'photos');
-
-        return $post->toEntity();
+        return $post->loadEntityRelations()->toEntity();
     }
 
     /**
@@ -140,9 +138,7 @@ class ARPostManager implements PostManager
             }
         });
 
-        $post->load('tags', 'photos');
-
-        return $post->toEntity();
+        return $post->loadEntityRelations()->toEntity();
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace Core\Entities;
 
 use Core\ValueObjects\Coordinates;
+use Core\ValueObjects\Latitude;
+use Core\ValueObjects\Longitude;
 
 /**
  * Class LocationEntity.
@@ -22,7 +24,10 @@ final class LocationEntity extends AbstractEntity
     public function __construct(array $attributes)
     {
         $this->setId($attributes['id'] ?? null);
-        $this->setCoordinates($attributes['coordinates'] ?? null);
+        $this->setCoordinates(new Coordinates(
+            new Latitude($attributes['coordinates']['latitude'] ?? null),
+            new Longitude($attributes['coordinates']['longitude'] ?? null)
+        ));
     }
 
     /**

@@ -125,13 +125,14 @@ class ImagineImageProcessor implements ImageProcessor
     {
         return collect($this->config['thumbnails'])
             ->map(function ($config) {
-                $this->image
+                $thumbnail = $this->image
                     ->thumbnail(new Box($config['width'], $config['height']), $config['mode'])
                     ->save($this->getThumbnailStoragePath($config['prefix']), ['quality' => $config['quality']]);
+
                 return [
                     'path' => $this->getThumbnailAbsolutePath($config['prefix']),
-                    'width' => $config['width'],
-                    'height' => $config['height'],
+                    'width' => $thumbnail->getSize()->getWidth(),
+                    'height' => $thumbnail->getSize()->getHeight(),
                 ];
             })
             ->toArray();

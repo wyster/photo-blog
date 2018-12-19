@@ -48,14 +48,14 @@ return [
     'photo' => [
         'thumbnails' => [
             [
-                'mode' => 'inset',
+                'mode' => \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET,
                 'quality' => 70,     // percentage
                 'prefix' => 'large',
                 'width' => 2000,     // pixels
                 'height' => 2000,    // pixels
             ],
             [
-                'mode' => 'inset',
+                'mode' => \Imagine\Image\ManipulatorInterface::THUMBNAIL_INSET,
                 'quality' => 70,    // percentage
                 'prefix' => 'medium',
                 'width' => 600,     // pixels

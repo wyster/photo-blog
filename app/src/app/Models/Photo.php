@@ -116,6 +116,14 @@ class Photo extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_PHOTOS);
+    }
+
+    /**
      * @return Post|null
      */
     public function getPostAttribute(): ?Post
@@ -125,14 +133,6 @@ class Photo extends Model
         $post = $this->getRelation('post');
 
         return $post;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_PHOTOS);
     }
 
     /**

@@ -43,14 +43,6 @@ class Tag extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_TAGS);
-    }
-
-    /**
      * @inheritdoc
      */
     public function newEloquentBuilder($query): TagBuilder
@@ -64,6 +56,14 @@ class Tag extends Model
     public function newQuery(): TagBuilder
     {
         return parent::newQuery();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, Constant::TABLE_POSTS_TAGS);
     }
 
     /**

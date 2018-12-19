@@ -76,22 +76,6 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, Constant::TABLE_POSTS_TAGS);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function photos()
-    {
-        return $this->belongsToMany(Photo::class, Constant::TABLE_POSTS_PHOTOS);
-    }
-
-    /**
      * @inheritdoc
      */
     public function newEloquentBuilder($query): PostBuilder
@@ -105,6 +89,22 @@ class Post extends Model
     public function newQuery(): PostBuilder
     {
         return parent::newQuery();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, Constant::TABLE_POSTS_TAGS);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class, Constant::TABLE_POSTS_PHOTOS);
     }
 
     /**

@@ -41,6 +41,30 @@ class Location extends Model
     ];
 
     /**
+     * @inheritdoc
+     */
+    public function newEloquentBuilder($query): LocationBuilder
+    {
+        return (new LocationBuilder($query))->defaultSelect();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function newQuery(): LocationBuilder
+    {
+        return parent::newQuery();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class, 'location_id');
+    }
+
+    /**
      * @param Coordinates $coordinates
      * @return $this
      */
@@ -63,30 +87,6 @@ class Location extends Model
         [$latitude, $longitude] = explode(' ', $raw);
 
         return new Coordinates(new Latitude($latitude), new Longitude($longitude));
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function newEloquentBuilder($query): LocationBuilder
-    {
-        return (new LocationBuilder($query))->defaultSelect();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function newQuery(): LocationBuilder
-    {
-        return parent::newQuery();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function photos()
-    {
-        return $this->hasMany(Photo::class, 'location_id');
     }
 
     /**

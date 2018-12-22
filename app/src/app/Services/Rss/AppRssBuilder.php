@@ -2,17 +2,19 @@
 
 namespace App\Services\Rss;
 
-use App\Managers\Photo\ARPhotoManager;
 use App\Models\Post;
 use App\Services\Rss\Contracts\RssBuilder;
+use Core\Contracts\PhotoManager;
 use Core\Entities\PostEntity;
 use Core\Entities\TagEntity;
+use Illuminate\Config\Repository as Config;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Lib\Rss\Category;
 use Lib\Rss\Channel;
 use Lib\Rss\Contracts\Builder;
 use Lib\Rss\Enclosure;
 use Lib\Rss\Item;
+use function App\Util\url_frontend;
 use function App\Util\url_frontend_photo;
 use function App\Util\url_storage;
 
@@ -24,6 +26,11 @@ use function App\Util\url_storage;
 class AppRssBuilder implements RssBuilder
 {
     /**
+     * @var Config
+     */
+    private $config;
+
+    /**
      * @var Storage
      */
     private $storage;
@@ -34,19 +41,21 @@ class AppRssBuilder implements RssBuilder
     private $rssBuilder;
 
     /**
-     * @var ARPhotoManager
+     * @var PhotoManager
      */
     private $photoManager;
 
     /**
      * AppRssBuilder constructor.
      *
+     * @param Config $config
      * @param Storage $storage
      * @param Builder $rssBuilder
-     * @param ARPhotoManager $photoManager
+     * @param PhotoManager $photoManager
      */
-    public function __construct(Storage $storage, Builder $rssBuilder, ARPhotoManager $photoManager)
+    public function __construct(Config $config, Storage $storage, Builder $rssBuilder, PhotoManager $photoManager)
     {
+        $this->config = $config;
         $this->storage = $storage;
         $this->rssBuilder = $rssBuilder;
         $this->photoManager = $photoManager;
@@ -70,9 +79,9 @@ class AppRssBuilder implements RssBuilder
     private function provideChannel(): Channel
     {
         return (new Channel)
-            ->setTitle(config('app.name'))
-            ->setDescription(config('app.description'))
-            ->setLink(url('/'));
+            ->setTitle($this->config->get('app.name'))
+            ->setDescription($this->config->get('app.description'))
+            ->setLink(url_frontend());
     }
 
     /**

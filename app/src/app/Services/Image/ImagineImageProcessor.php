@@ -6,7 +6,7 @@ use App\Services\Image\Contracts\ImageProcessor;
 use Illuminate\Contracts\Filesystem\Factory as Storage;
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
 use Illuminate\Validation\Rule;
-use Imagine\Image\AbstractImagine;
+use Imagine\Image\AbstractImagine as Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\Metadata\ExifMetadataReader;
@@ -21,7 +21,7 @@ use InvalidArgumentException;
 class ImagineImageProcessor implements ImageProcessor
 {
     /**
-     * @var AbstractImagine
+     * @var Imagine
      */
     private $imagine;
 
@@ -48,12 +48,12 @@ class ImagineImageProcessor implements ImageProcessor
     /**
      * ImagineImageProcessor constructor.
      *
-     * @param AbstractImagine $imagine
+     * @param Imagine $imagine
      * @param Storage $storage
      * @param ValidatorFactory $validatorFactory
      * @param array $config
      */
-    public function __construct(AbstractImagine $imagine, Storage $storage, ValidatorFactory $validatorFactory, array $config)
+    public function __construct(Imagine $imagine, Storage $storage, ValidatorFactory $validatorFactory, array $config)
     {
         $validator = $validatorFactory->make($config, [
             'thumbnails' => ['required', 'array'],

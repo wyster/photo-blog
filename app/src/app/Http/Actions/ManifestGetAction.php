@@ -3,7 +3,6 @@
 namespace App\Http\Actions;
 
 use App\Services\Manifest\Contracts\Manifest;
-use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 
 /**
@@ -11,7 +10,7 @@ use Illuminate\Routing\ResponseFactory;
  *
  * @package App\Http\Actions
  */
-class ManifestGetAction extends Controller
+class ManifestGetAction
 {
     /**
      * @var ResponseFactory

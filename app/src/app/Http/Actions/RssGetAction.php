@@ -6,7 +6,6 @@ use App\Services\Rss\Contracts\RssBuilder;
 use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Illuminate\Routing\ResponseFactory;
 
 /**
@@ -14,7 +13,7 @@ use Illuminate\Routing\ResponseFactory;
  *
  * @package App\Http\Actions
  */
-class RssGetAction extends Controller
+class RssGetAction
 {
     /**
      * @var ResponseFactory

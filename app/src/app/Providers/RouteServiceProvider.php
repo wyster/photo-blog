@@ -14,15 +14,6 @@ use Illuminate\Support\Facades\Route;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * This namespace is applied to your controller routes.
-     *
-     * In addition, it is set as the URL generator's root namespace.
-     *
-     * @var string
-     */
-    protected $namespace = 'App\Http\Controllers';
-
-    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -77,7 +68,6 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api/v1')
             ->middleware('api/v1')
-            ->namespace('Api\V1\Http\Controllers')
             ->group(base_path('routes/api/v1.php'));
     }
 
@@ -91,7 +81,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapWebRoutes()
     {
         Route::middleware('web')
-            ->namespace($this->namespace)
             ->group(base_path('routes/web.php'));
     }
 
@@ -103,7 +92,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function mapPublicRoutes()
     {
         Route::middleware('public')
-            ->namespace($this->namespace)
             ->group(base_path('routes/public.php'));
     }
 }

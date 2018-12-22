@@ -1,22 +1,20 @@
 <?php
 
-namespace Api\V1\Http\Controllers;
+namespace Api\V1\Http\Actions;
 
 use Api\V1\Http\Requests\PaginatedRequest;
-use Api\V1\Http\Requests\ReCaptchaRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\SubscriptionPlainResource;
 use Core\Contracts\SubscriptionManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 
 /**
- * Class SubscriptionsController.
+ * Class SubscriptionPaginateAction.
  *
- * @package Api\V1\Http\Controllers
+ * @package Api\V1\Http\Actions
  */
-class SubscriptionsController extends Controller
+class SubscriptionPaginateAction
 {
     /**
      * @var ResponseFactory
@@ -29,7 +27,7 @@ class SubscriptionsController extends Controller
     private $subscriptionManager;
 
     /**
-     * SubscriptionController constructor.
+     * SubscriptionPaginateAction constructor.
      *
      * @param ResponseFactory $responseFactory
      * @param SubscriptionManager $subscriptionManager
@@ -38,38 +36,6 @@ class SubscriptionsController extends Controller
     {
         $this->responseFactory = $responseFactory;
         $this->subscriptionManager = $subscriptionManager;
-    }
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {post} /v1/subscriptions Create
-     * @apiName Create
-     * @apiGroup Subscriptions
-     * @apiHeader {String} Accept application/json
-     * @apiHeader {String} Content-Type application/json
-     * @apiParamExample {json} Request-Body-Example:
-     * {
-     *     "email": "username@domain.name"
-     * }
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 201 Created
-     * {
-     *     "email": "username@mail.address",
-     *     "token": "subscription_token_string"
-     * }
-     */
-
-    /**
-     * Create a subscription.
-     *
-     * @param ReCaptchaRequest $request
-     * @return JsonResponse
-     */
-    public function create(ReCaptchaRequest $request): JsonResponse
-    {
-        $subscription = $this->subscriptionManager->create($request->all());
-
-        return $this->responseFactory->json(new SubscriptionPlainResource($subscription), JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -104,7 +70,7 @@ class SubscriptionsController extends Controller
      * @param PaginatedRequest $request
      * @return JsonResponse
      */
-    public function paginate(PaginatedRequest $request): JsonResponse
+    public function __invoke(PaginatedRequest $request): JsonResponse
     {
         $paginator = $this->subscriptionManager->paginate(
             $request->get('page', 1),
@@ -113,29 +79,5 @@ class SubscriptionsController extends Controller
         );
 
         return $this->responseFactory->json(new PaginatedResource($paginator, SubscriptionPlainResource::class), JsonResponse::HTTP_OK);
-    }
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {delete} /v1/subscriptions/:token Delete
-     * @apiName Delete
-     * @apiGroup Subscriptions
-     * @apiHeader {String} Accept application/json
-     * @apiParam {String{1..255}} :token Subscription token.
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 204 No Content
-     */
-
-    /**
-     * Delete a subscription.
-     *
-     * @param string $token
-     * @return JsonResponse
-     */
-    public function delete(string $token): JsonResponse
-    {
-        $this->subscriptionManager->deleteByToken($token);
-
-        return $this->responseFactory->json(null, JsonResponse::HTTP_NO_CONTENT);
     }
 }

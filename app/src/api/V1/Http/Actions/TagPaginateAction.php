@@ -1,22 +1,21 @@
 <?php
 
-namespace Api\V1\Http\Controllers;
+namespace Api\V1\Http\Actions;
 
 use Api\V1\Http\Requests\PaginatedRequest;
 use Api\V1\Http\Resources\PaginatedResource;
 use Api\V1\Http\Resources\TagPlainResource;
-use App\Managers\Tag\ARTagManager;
+use Core\Contracts\TagManager;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 
 /**
- * Class TagsController.
+ * Class TagPaginateAction.
  *
- * @package Api\V1\Http\Controllers
+ * @package Api\V1\Http\Actions
  */
-class TagsController extends Controller
+class TagPaginateAction
 {
     /**
      * @var ResponseFactory
@@ -24,17 +23,17 @@ class TagsController extends Controller
     private $responseFactory;
 
     /**
-     * @var ARTagManager
+     * @var TagManager
      */
     private $tagManager;
 
     /**
-     * TagsController constructor.
+     * TagPaginateAction constructor.
      *
      * @param ResponseFactory $responseFactory
-     * @param ARTagManager $tagManager
+     * @param TagManager $tagManager
      */
-    public function __construct(ResponseFactory $responseFactory, ARTagManager $tagManager)
+    public function __construct(ResponseFactory $responseFactory, TagManager $tagManager)
     {
         $this->responseFactory = $responseFactory;
         $this->tagManager = $tagManager;
@@ -73,7 +72,7 @@ class TagsController extends Controller
      * @param PaginatedRequest $request
      * @return JsonResponse
      */
-    public function paginate(PaginatedRequest $request): JsonResponse
+    public function __invoke(PaginatedRequest $request): JsonResponse
     {
         $paginator = $this->tagManager->paginate(
             $request->get('page', 1),

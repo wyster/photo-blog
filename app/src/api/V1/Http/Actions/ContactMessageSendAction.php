@@ -1,21 +1,20 @@
 <?php
 
-namespace Api\V1\Http\Controllers;
+namespace Api\V1\Http\Actions;
 
 use Api\V1\Http\Requests\ContactMessageRequest;
 use App\Mail\ContactMessage;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * Class ContactMessagesController.
+ * Class ContactMessageSendAction.
  *
- * @package Api\V1\Http\Controllers
+ * @package Api\V1\Http\Actions
  */
-class ContactMessagesController extends Controller
+class ContactMessageSendAction
 {
     /**
      * @var ResponseFactory
@@ -23,7 +22,7 @@ class ContactMessagesController extends Controller
     protected $responseFactory;
 
     /**
-     * ContactMessagesController constructor.
+     * ContactMessageSendAction constructor.
      *
      * @param ResponseFactory $responseFactory
      */
@@ -56,7 +55,7 @@ class ContactMessagesController extends Controller
      * @param ContactMessageRequest $request
      * @return JsonResponse
      */
-    public function create(ContactMessageRequest $request): JsonResponse
+    public function __invoke(ContactMessageRequest $request): JsonResponse
     {
         $request->merge(['client_ip_address' => $request->getClientIp()]);
 

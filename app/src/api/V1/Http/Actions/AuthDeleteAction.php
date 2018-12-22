@@ -1,21 +1,19 @@
 <?php
 
-namespace Api\V1\Http\Controllers;
+namespace Api\V1\Http\Actions;
 
 use Api\V1\Http\Proxy\Contracts\OAuthProxy;
-use Api\V1\Http\Requests\CreateAuthRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
 
 /**
- * Class AuthController.
+ * Class AuthDeleteAction.
  *
- * @package Api\V1\Http\Controllers
+ * @package Api\V1\Http\Actions
  */
-class AuthController extends Controller
+class AuthDeleteAction
 {
     /**
      * @var ResponseFactory
@@ -28,7 +26,7 @@ class AuthController extends Controller
     protected $oAuthProxy;
 
     /**
-     * AuthController constructor.
+     * AuthDeleteAction constructor.
      *
      * @param ResponseFactory $responseFactory
      * @param OAuthProxy $oAuthProxy
@@ -37,37 +35,6 @@ class AuthController extends Controller
     {
         $this->responseFactory = $responseFactory;
         $this->oAuthProxy = $oAuthProxy;
-    }
-
-    /**
-     * @apiVersion 1.0.0
-     * @api {post} /v1/auth/token Create
-     * @apiName Create
-     * @apiGroup Auth
-     * @apiHeader {String} Accept application/json
-     * @apiHeader {String} Content-Type application/json
-     * @apiParamExample {json} Request-Body-Example:
-     * {
-     *     "email": "username@domain.name",
-     *     "password": "password"
-     * }
-     * @apiSuccessExample {json} Success-Response:
-     * HTTP/1.1 204 No Content
-     */
-
-    /**
-     * Create an auth token.
-     *
-     * @param CreateAuthRequest $request
-     * @return Response
-     */
-    public function create(CreateAuthRequest $request)
-    {
-        return $this->oAuthProxy->requestTokenByCredentials(
-            env('OAUTH_CLIENT_ID'),
-            $request->input('email'),
-            $request->input('password')
-        );
     }
 
     /**
@@ -86,7 +53,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function delete(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $request->user()->token()->revoke();
         $request->user()->token()->delete();
